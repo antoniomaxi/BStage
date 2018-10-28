@@ -55,7 +55,9 @@
             android:layout_marginTop="7dp"
             android:text="Precio"
             android:textSize="18dp"
-            android:textStyle="bold" />
+            android:drawableRight="@drawable/ic_attach_money_black_24dp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
+
 </LinearLayout>
