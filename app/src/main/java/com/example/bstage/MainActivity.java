@@ -5,7 +5,16 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,91 +22,126 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mResult;
+    //private TextView mResult; //VIEJO
+    private String  TAG = MainActivity.class.getSimpleName(); // NUEVA
+    private ListView Lista; //Lista = lv
+    ArrayList<HashMap<String, String>> listaEventos; //listaEventos = contactList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mResult = (TextView) findViewById(R.id.txtvista);
+        //mResult = (TextView) findViewById(R.id.txtvista);// VIEJO
+
+        listaEventos = new ArrayList<>();// NUEVO
+        Lista = (ListView) findViewById(R.id.list);
+
 
         //Get//
-        new GetDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
+        //new GetDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
+        new GetDataTask().execute();
     }
 
 
-    class GetDataTask extends AsyncTask<String, Void, String> {
+    //class GetDataTask extends AsyncTask<String, Void, String> {
+    class GetDataTask extends AsyncTask<Void, Void, Void> {
 
-
-        ProgressDialog progressDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("Cargando...");
-            progressDialog.show();
+            Toast.makeText(MainActivity.this,"Cargando...",Toast.LENGTH_LONG).show();
+
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Void doInBackground(Void... arg0) {
+            HttpHandler sh = new HttpHandler();
+
+            // Making a request to url and getting response
+            String url = "http://backstage-backend.herokuapp.com/api/eventos";
+            String jsonStr = sh.makeServiceCall(url);
 
 
-            StringBuilder resultado = new StringBuilder();
-            try {
-                //Inicio y config de request
+            Log.e("json", "Response from url: " + jsonStr);
+            if (jsonStr != null) {
+                try {
 
-                URL url = new URL(params[0]);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setReadTimeout(10000);// milisegundoos
-                urlConnection.setConnectTimeout(10000);// milisegundoos
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setRequestProperty("Content-Type", "application/json");//header
-                urlConnection.connect();
-                Log.e("URL", "URL SI");
+                    JSONArray eventos =new JSONArray(jsonStr);
 
 
-                //Lectura de la Data
+                    // looping through All Contacts
+                    for (int i = 0; i < eventos.length(); i++) {
+                        JSONObject e = eventos.getJSONObject(i);
+                        String name = e.getString("Name");
+                        String productor = e.getString("Productor");
+                        String fecha = e.getString("Fecha");
+                        String lugar = e.getString("Lugar");
+                        String calificacion = e.getString("Calificacion");
+                        String descripcion = e.getString("Descripcion");
+                        String precio = e.getString("Precio");
+                        String categoria = e.getString("Categoria");
 
-                InputStream inputStream = urlConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
 
+                        // tmp hash map for single contact
+                        HashMap<String, String> evento = new HashMap<>();
 
-                while ((line = bufferedReader.readLine()) != null) {
-                    resultado.append(line).append("\n");
-                    System.out.println("while");
+                        // adding each child node to HashMap key => value
+                        evento.put("Name", name);
+                        evento.put("Productor", productor);
+                        evento.put("Fecha", fecha);
+                        evento.put("Lugar", lugar);
+                        evento.put("Calificacion", calificacion);
+                        evento.put("Descripcion", descripcion);
+                        evento.put("Precio", precio);
+                        evento.put("Categoria", categoria);
+
+                        // adding contact to contact list
+                        listaEventos.add(evento);
+                    }
+                } catch (final JSONException ex) {
+                    Log.e(TAG, "Json parsing error: " + ex.getMessage());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    "Json parsing error: " + ex.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+
                 }
 
-            } catch (IOException ex) {
-                return ex.getMessage();
-
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),
+                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
-            return resultado.toString();
+            return null;
         }
+
 
         @Override
-        protected void onPostExecute(String resultado) {
-            super.onPostExecute(resultado);
-
-            //Set Data
-
-            mResult.setText(resultado);
-
-            System.out.println("Resultado" + resultado);
-
-            //cancelacion progressDialog
-
-            if (progressDialog != null) {
-
-                progressDialog.dismiss();
-            }
-
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            ListAdapter adapter = new SimpleAdapter(MainActivity.this, listaEventos,
+                    R.layout.list_item, new String[]{ "Name","Precio","Fecha","Lugar"},
+                    new int[]{R.id.name, R.id.precio, R.id.fecha, R.id.lugar});
+            Lista.setAdapter(adapter);
+        }
         }
     }
-}
+
