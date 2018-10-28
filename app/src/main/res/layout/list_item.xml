@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginTop="5dp"
+    android:padding="8dp"
+    android:background="#fff">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/loading_shape"
+        android:id="@+id/thumbnail"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre del evento"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Categoria" />
+
+        <TextView
+            android:id="@+id/calificacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rating_backgroud"
+            android:drawableLeft="@drawable/ic_star_black_24dp"
+            android:paddingRight="7dp"
+            android:text="0.0"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="Precio"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>
