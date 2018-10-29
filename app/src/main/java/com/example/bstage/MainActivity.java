@@ -27,9 +27,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private TextView mResult; //VIEJO
-    private String  TAG = MainActivity.class.getSimpleName(); // NUEVA
-    private ListView Lista; //Lista = lv
+    private String  TAG = MainActivity.class.getSimpleName();
+    private ListView Lista;
     ArrayList<HashMap<String, String>> listaEventos; //listaEventos = contactList
 
     @Override
@@ -37,27 +36,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //mResult = (TextView) findViewById(R.id.txtvista);// VIEJO
-
         listaEventos = new ArrayList<>();// NUEVO
         Lista = (ListView) findViewById(R.id.list);
 
-
-        //Get//
-        //new GetDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
         new GetDataTask().execute();
     }
 
-
-    //class GetDataTask extends AsyncTask<String, Void, String> {
     class GetDataTask extends AsyncTask<Void, Void, Void> {
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             Toast.makeText(MainActivity.this,"Cargando...",Toast.LENGTH_LONG).show();
-
         }
 
         @Override
@@ -68,13 +57,11 @@ public class MainActivity extends AppCompatActivity {
             String url = "http://backstage-backend.herokuapp.com/api/eventos";
             String jsonStr = sh.makeServiceCall(url);
 
-
             Log.e("json", "Response from url: " + jsonStr);
             if (jsonStr != null) {
                 try {
 
                     JSONArray eventos =new JSONArray(jsonStr);
-
 
                     // looping through All Contacts
                     for (int i = 0; i < eventos.length(); i++) {
@@ -87,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                         String descripcion = e.getString("Descripcion");
                         String precio = e.getString("Precio");
                         String categoria = e.getString("Categoria");
-
 
                         // tmp hash map for single contact
                         HashMap<String, String> evento = new HashMap<>();
@@ -115,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
                         }
                     });
-
                 }
 
             } else {
