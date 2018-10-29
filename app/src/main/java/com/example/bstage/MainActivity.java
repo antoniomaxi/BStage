@@ -1,5 +1,4 @@
 package com.example.bstage;
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -11,45 +10,35 @@ import android.widget.TextView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private TextView mResult; //VIEJO
-    private String  TAG = MainActivity.class.getSimpleName(); // NUEVA
-    private ListView Lista; //Lista = lv
-    ArrayList<HashMap<String, String>> listaEventos; //listaEventos = contactList
+    //INICIO CLASE MAIN ACTIVITY
+
+    //ATRIBUTOS DE CLASE
+    private String  TAG = MainActivity.class.getSimpleName();
+    private ListView Lista;
+    ArrayList<HashMap<String, String>> listaEventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //mResult = (TextView) findViewById(R.id.txtvista);// VIEJO
-
         listaEventos = new ArrayList<>();// NUEVO
         Lista = (ListView) findViewById(R.id.list);
 
 
         //Get//
-        //new GetDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
+
         new GetDataTask().execute();
     }
 
-
-    //class GetDataTask extends AsyncTask<String, Void, String> {
     class GetDataTask extends AsyncTask<Void, Void, Void> {
 
 
