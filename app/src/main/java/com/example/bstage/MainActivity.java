@@ -2,6 +2,8 @@ package com.example.bstage;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,12 +31,19 @@ public class MainActivity extends AppCompatActivity {
 
     private String  TAG = MainActivity.class.getSimpleName();
     private ListView Lista;
-    ArrayList<HashMap<String, String>> listaEventos; //listaEventos = contactList
+    ArrayList<HashMap<String, String>> listaEventos;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listaEventos = new ArrayList<>();// NUEVO
         Lista = (ListView) findViewById(R.id.list);
