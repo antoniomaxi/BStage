@@ -1,12 +1,17 @@
 package com.example.bstage;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -27,7 +32,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private String  TAG = MainActivity.class.getSimpleName();
     private ListView Lista;
@@ -44,11 +49,21 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nv_main);
+        nvDrawer.setNavigationItemSelectedListener(this);
 
-        listaEventos = new ArrayList<>();// NUEVO
+        listaEventos = new ArrayList<>();
         Lista = (ListView) findViewById(R.id.list);
 
         new GetDataTask().execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class GetDataTask extends AsyncTask<Void, Void, Void> {
@@ -136,6 +151,22 @@ public class MainActivity extends AppCompatActivity {
                     new int[]{R.id.name, R.id.precio, R.id.categoria, R.id.calificacion});
             Lista.setAdapter(adapter);
         }
+        }
+
+        public boolean onNavigationItemSelected(MenuItem item) {
+
+            int id= item.getItemId();
+
+            if(id==R.id.nv_main){
+                Toast.makeText(this, "Esto es main", Toast.LENGTH_SHORT).show();
+            }
+            if(id==R.id.nv_miseventos){
+                Toast.makeText(this, "Esto es mis eventos", Toast.LENGTH_SHORT).show();
+            }
+            if(id==R.id.nv_buscar){
+                Toast.makeText(this, "Esto es buscar", Toast.LENGTH_SHORT).show();
+            }
+            return false;
         }
     }
 
