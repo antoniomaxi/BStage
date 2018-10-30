@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String categoria = e.getString("Categoria");
                         String urlImagen = e.getString("Imagen");
 
+                        getImage(urlImagen);
                         // tmp hash map for single contact
                         HashMap<String, String> evento = new HashMap<>();
 
@@ -117,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         evento.put("Descripcion", descripcion);
                         evento.put("Precio", precio);
                         evento.put("Categoria", categoria);
-                        evento.put("Imagen", urlImagen);
 
                         // adding contact to contact list
                         listaEventos.add(evento);
@@ -174,6 +174,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "Esto es buscar", Toast.LENGTH_SHORT).show();
             }
             return false;
+        }
+
+        public void getImage(String url){
+
+            Glide.with(this)
+                    .load(url)
+                    .into(fotoImageView);
         }
     }
 
