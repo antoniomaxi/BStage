@@ -12,12 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<HashMap<String, String>> listaEventos;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+    private ImageView fotoImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         listaEventos = new ArrayList<>();
         Lista = (ListView) findViewById(R.id.list);
+        fotoImageView = (ImageView) findViewById(R.id.thumbnail);
 
         new GetDataTask().execute();
     }
@@ -98,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String descripcion = e.getString("Descripcion");
                         String precio = e.getString("Precio");
                         String categoria = e.getString("Categoria");
+                        String urlImagen = e.getString("Imagen");
 
                         // tmp hash map for single contact
                         HashMap<String, String> evento = new HashMap<>();
@@ -111,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         evento.put("Descripcion", descripcion);
                         evento.put("Precio", precio);
                         evento.put("Categoria", categoria);
+                        evento.put("Imagen", urlImagen);
 
                         // adding contact to contact list
                         listaEventos.add(evento);
@@ -148,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onPostExecute(result);
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, listaEventos,
                     R.layout.list_item, new String[]{ "Name","Precio","Categoria","Calificacion"},
-                    new int[]{R.id.name, R.id.precio, R.id.categoria, R.id.calificacion});
+                    new int[]{R.id.name, R.id.precio, R.id.categoria, R.id.calificacion, });
             Lista.setAdapter(adapter);
         }
         }
