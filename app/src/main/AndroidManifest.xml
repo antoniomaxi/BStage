@@ -19,7 +19,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".MisEventos" />
-        <activity android:name=".Buscar"></activity>
+        <activity android:name=".Buscar" />
+        <activity android:name=".MainLocal">
+            <intent-filter>
+                <action android:name="android.intent.action.MAINLOCAL" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
