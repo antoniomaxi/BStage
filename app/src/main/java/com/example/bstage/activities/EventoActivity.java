@@ -3,8 +3,12 @@ package com.example.bstage.activities;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -12,10 +16,30 @@ import com.example.bstage.R;
 
 public class EventoActivity extends AppCompatActivity {
 
+    RatingBar ratingBar;
+    Button btnCalificar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
+
+        ratingBar = (RatingBar) findViewById(R.id.rating_eventos);
+        btnCalificar = (Button) findViewById(R.id.btn_calificar);
+/*
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(EventoActivity.this, "Stars: "+ (int)rating, Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+        btnCalificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EventoActivity.this, "Stars: " + (float)ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //hide de default action bar
         getSupportActionBar().hide();
