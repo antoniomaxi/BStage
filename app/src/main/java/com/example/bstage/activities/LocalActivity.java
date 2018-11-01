@@ -1,73 +1,62 @@
-package com.example.bstage;
+package com.example.bstage.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.example.bstage.models.Local;
+import com.example.bstage.adapter.LocalListAdapter;
+import com.example.bstage.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class LocalActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
-    ArrayList<Evento> arrayList;
-    ListView lv;
+    ArrayList<Local> arrayList;
+    ListView localv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        setContentView(R.layout.activity_main_local);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerlocal);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.Open, R.string.Close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nv_main);
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nv_local);
         nvDrawer.setNavigationItemSelectedListener(this);
 
         //Inicio Logica onCreate
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_local);
         arrayList = new ArrayList<>();
-        lv = (ListView) findViewById(R.id.list);
+        localv = (ListView) findViewById(R.id.listLocal);
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new ReadJSON().execute("https://backstage-backend.herokuapp.com/api/eventos");
+                new ReadJSON().execute("https://backstage-backend.herokuapp.com/api/locales");
             }
         });
 
@@ -81,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return super.onOptionsItemSelected(menuItem);
     }
-
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -101,22 +89,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected void onPostExecute(String content) {
             try {
 
-                JSONArray eventos =  new JSONArray(content);
+                JSONArray locales =  new JSONArray(content);
 
-                for(int i =0;i<eventos.length(); i++){
+                for(int i =0;i<locales.length(); i++){
 
-                    JSONObject e = eventos.getJSONObject(i);
+                    JSONObject l = locales.getJSONObject(i);
 
-                    arrayList.add(new Evento(
-                            e.getString("Name"),
-                            e.getString("Lugar"),
-                            e.getString("Fecha"),
-                            e.getString("Imagen"),
-                            e.getString("Productor"),
-                            e.getString("Calificacion"),
-                            e.getString("Descripcion"),
-                            e.getString("Precio"),
-                            e.getString("Categoria")
+                    arrayList.add(new Local(
+                            l.getString("Name"),
+                            l.getString("Direccion"),
+                            l.getString("Calificacion"),
+                            l.getString("Descripcion"),
+                            l.getString("Precio"),
+                            l.getString("Categoria"),
+                            l.getString("Imagen")
                     ));
 
                 }
@@ -124,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
 
-            EventoListAdapter adapter = new EventoListAdapter(
-                    getApplicationContext(), R.layout.list_item, arrayList
+            LocalListAdapter adapter = new LocalListAdapter(
+                    getApplicationContext(), R.layout.list_locales, arrayList
             );
-            lv.setAdapter(adapter);
+            localv.setAdapter(adapter);
         }
     }
 
@@ -161,11 +147,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.eventos:
-                Intent m = new Intent(MainActivity.this, MainActivity.class);
+                Intent m = new Intent(LocalActivity.this, MainActivity.class);
                 startActivity(m);
                 break;
             case R.id.locales:
-                Intent a = new Intent(MainActivity.this, MainLocal.class);
+                Intent a = new Intent(LocalActivity.this, LocalActivity.class);
                 startActivity(a);
                 break;
             default:
@@ -177,9 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-    }
-
+}
 
 
 

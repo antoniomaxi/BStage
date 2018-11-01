@@ -1,4 +1,4 @@
-package com.example.bstage;
+package com.example.bstage.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,21 +9,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bstage.models.Local;
+import com.example.bstage.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class EventoListAdapter extends ArrayAdapter<Evento> {
+public class LocalListAdapter extends ArrayAdapter<Local> {
 
-    ArrayList<Evento> eventos;
+    ArrayList<Local> locales;
     Context context;
     int resource;
 
-    public EventoListAdapter(Context context, int resource, ArrayList<Evento> eventos) {
-        super(context, resource, eventos);
+    public LocalListAdapter(Context context, int resource, ArrayList<Local> locales) {
+        super(context, resource, locales);
 
-        this.eventos = eventos;
+        this.locales = locales;
         this.context = context;
         this.resource = resource;
 
@@ -35,26 +36,26 @@ public class EventoListAdapter extends ArrayAdapter<Evento> {
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) getContext()
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_item, null, true);
+            convertView = layoutInflater.inflate(R.layout.list_locales, null, true);
 
         }
 
-        Evento evento = getItem(position);
+        Local local = getItem(position);
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.ImgEvento);
-        Picasso.get().load(evento.getImagen()).into(imageView);
+        Picasso.get().load(local.getImagen()).into(imageView);
 
         TextView txtName = (TextView) convertView.findViewById(R.id.name);
-        txtName.setText(evento.getName());
+        txtName.setText(local.getName());
 
         TextView txtCalificacion = (TextView) convertView.findViewById(R.id.calificacion);
-        txtCalificacion.setText(evento.getCalificacion());
+        txtCalificacion.setText(local.getCalificacion());
 
         TextView txtPrecio = (TextView) convertView.findViewById(R.id.precio);
-        txtPrecio.setText(evento.getPrecio());
+        txtPrecio.setText(local.getPrecio());
 
         TextView txtCategoria = (TextView) convertView.findViewById(R.id.categoria);
-        txtCategoria.setText(evento.getCategoria());
+        txtCategoria.setText(local.getCategoria());
 
         return convertView;
 

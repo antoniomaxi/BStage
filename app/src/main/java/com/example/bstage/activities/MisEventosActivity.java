@@ -1,4 +1,4 @@
-package com.example.bstage;
+package com.example.bstage.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class MisEventos extends AppCompatActivity {
+import com.example.bstage.R;
+
+public class MisEventosActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,24 +24,7 @@ public class MisEventos extends AppCompatActivity {
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         //here is the main place where we need to work on.
-        int id = item.getItemId();
-        switch (id) {
 
-            case R.id.nv_main:
-                Intent m = new Intent(MisEventos.this, MainActivity.class);
-                startActivity(m);
-                break;
-            case R.id.nv_miseventos:
-                Intent e = new Intent(MisEventos.this, MisEventos.class);
-                startActivity(e);
-                break;
-            case R.id.nv_buscar:
-                Intent b = new Intent(MisEventos.this, Buscar.class);
-                startActivity(b);
-                break;
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

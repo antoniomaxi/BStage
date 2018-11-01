@@ -1,4 +1,4 @@
-package com.example.bstage;
+package com.example.bstage.models;
 
 public class Local {
 

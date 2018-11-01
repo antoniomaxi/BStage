@@ -1,4 +1,4 @@
-package com.example.bstage;
+package com.example.bstage.models;
 
 public class Evento {
 
@@ -12,9 +12,12 @@ public class Evento {
     private String Precio;
     private String Categoria;
 
-    public Evento(String name, String lugar, String fecha,
-                  String imagen, String productor, String calificacion,
-                  String descripcion, String precio, String categoria) {
+    public Evento(){
+
+    }
+
+    public Evento(String name, String lugar, String fecha, String imagen, String productor, String calificacion, String descripcion,
+                  String precio, String categoria) {
 
         Name = name;
         Lugar = lugar;
