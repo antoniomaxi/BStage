@@ -35,11 +35,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    //PARA LISTAR LOS JSONS
     private final String JSON_URL = "https://backstage-backend.herokuapp.com/api/eventos";
     private JsonArrayRequest request;
     private RequestQueue requestQueue;
     private List<Evento> lstEventos;
     private RecyclerView recyclerView;
+
+    //PARA EL MENU
+    private DrawerLayout mDrawer;
+    private ActionBarDrawerToggle mToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +52,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //MENU
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+        mToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.Open, R.string.Close);
+        mDrawer.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //LISTA JSON
         lstEventos = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recyclerviewid);
         jsonrequest();
+    }
+
+    //BOTON DE MENU ACTIVADO
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void jsonrequest() {
