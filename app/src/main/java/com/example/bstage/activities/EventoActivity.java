@@ -38,6 +38,7 @@ public class EventoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(EventoActivity.this, "Stars: " + (float)ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+                ratingBar.setRating(0);
             }
         });
 
