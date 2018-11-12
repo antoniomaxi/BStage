@@ -1,9 +1,5 @@
 package com.example.bstage.activities;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.ListView;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,15 +15,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.bstage.models.Evento;
 import com.example.bstage.adapter.RecyclerViewAdapter;
 import com.example.bstage.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         evento.setProductor(jsonObject.getString("Productor"));
                         evento.setFecha(jsonObject.getString("Fecha"));
                         evento.setLugar(jsonObject.getString("Lugar"));
+                        evento.setCategoria(jsonObject.getString("Categoria"));
                         evento.setCalificacion(jsonObject.getString("Calificacion"));
                         evento.setDescripcion(jsonObject.getString("Descripcion"));
                         evento.setPrecio(jsonObject.getString("Precio"));
