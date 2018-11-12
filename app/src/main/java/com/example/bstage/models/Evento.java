@@ -2,6 +2,7 @@ package com.example.bstage.models;
 
 public class Evento {
 
+    private String _id;
     private String Name;
     private String Lugar;
     private String Fecha;
@@ -11,14 +12,16 @@ public class Evento {
     private String Descripcion;
     private String Precio;
     private String Categoria;
+    private String Contador;
 
     public Evento(){
 
     }
 
-    public Evento(String name, String lugar, String fecha, String imagen, String productor, String calificacion, String descripcion,
-                  String precio, String categoria) {
+    public Evento(String ID, String name, String lugar, String fecha, String imagen, String productor, String calificacion, String descripcion,
+                  String precio, String categoria, String contador) {
 
+        _id = ID;
         Name = name;
         Lugar = lugar;
         Fecha = fecha;
@@ -28,6 +31,23 @@ public class Evento {
         Descripcion = descripcion;
         Precio = precio;
         Categoria = categoria;
+        Contador = contador;
+    }
+
+    public String getContador() {
+        return Contador;
+    }
+
+    public void setContador(String contador) {
+        Contador = contador;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getName() {

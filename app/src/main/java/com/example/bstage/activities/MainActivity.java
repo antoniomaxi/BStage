@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         jsonObject = response.getJSONObject(i);
                         Evento evento = new Evento();
 
+                        evento.set_id(jsonObject.getString("_id"));
                         evento.setName(jsonObject.getString("Name"));
                         evento.setProductor(jsonObject.getString("Productor"));
                         evento.setFecha(jsonObject.getString("Fecha"));
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         evento.setDescripcion(jsonObject.getString("Descripcion"));
                         evento.setPrecio(jsonObject.getString("Precio"));
                         evento.setImagen(jsonObject.getString("Imagen"));
+                        evento.setContador(jsonObject.getString("Contador"));
 
                         lstEventos.add(evento);
 

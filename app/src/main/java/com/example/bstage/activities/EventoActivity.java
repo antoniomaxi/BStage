@@ -46,6 +46,7 @@ public class EventoActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //Recibe la data
+        String id = getIntent().getExtras().getString("evento_id");
         String name = getIntent().getExtras().getString("evento_name");
         String productor = getIntent().getExtras().getString("evento_productor");
         String fecha = getIntent().getExtras().getString("evento_fecha");
@@ -55,6 +56,7 @@ public class EventoActivity extends AppCompatActivity {
         String precio = getIntent().getExtras().getString("evento_precio");
         String categoria = getIntent().getExtras().getString("evento_categoria");
         String imagen = getIntent().getExtras().getString("evento_imagen");
+        String cont = getIntent().getExtras().getString("evento_contador");
 
         //ini views
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingtoolbar_id);

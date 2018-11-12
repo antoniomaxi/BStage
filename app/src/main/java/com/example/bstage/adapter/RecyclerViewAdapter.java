@@ -37,6 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
 
+        holder.tv_id.setText(mData.get(position).get_id());
         holder.tv_name.setText(mData.get(position).getName());
         holder.tv_categoria.setText(mData.get(position).getCategoria());
         holder.tv_calificacion.setText(mData.get(position).getCalificacion());
@@ -63,7 +64,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.view_container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(mContext, EventoActivity.class);
+                i.putExtra("evento_id", mData.get(viewHolder.getAdapterPosition()).get_id());
                 i.putExtra("evento_name", mData.get(viewHolder.getAdapterPosition()).getName());
                 i.putExtra("evento_productor", mData.get(viewHolder.getAdapterPosition()).getProductor());
                 i.putExtra("evento_fecha", mData.get(viewHolder.getAdapterPosition()).getFecha());
@@ -73,6 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 i.putExtra("evento_precio", mData.get(viewHolder.getAdapterPosition()).getPrecio());
                 i.putExtra("evento_categoria", mData.get(viewHolder.getAdapterPosition()).getCategoria());
                 i.putExtra("evento_imagen", mData.get(viewHolder.getAdapterPosition()).getImagen());
+                i.putExtra("evento_contador", mData.get(viewHolder.getAdapterPosition()).getContador());
 
                 mContext.startActivity(i);
 
@@ -88,6 +92,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView tv_calificacion;
         TextView tv_categoria;
         TextView tv_precio;
+        TextView tv_id;
         ImageView img_ImgEvento;
         LinearLayout view_container;
 
@@ -95,6 +100,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             view_container = itemView.findViewById(R.id.container);
+            tv_id = itemView.findViewById(R.id.mongoid);
             tv_name = itemView.findViewById(R.id.evento_name);
             tv_precio = itemView.findViewById(R.id.precio);
             tv_categoria = itemView.findViewById(R.id.categoria);
