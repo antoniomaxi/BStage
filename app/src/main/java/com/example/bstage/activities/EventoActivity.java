@@ -26,13 +26,6 @@ public class EventoActivity extends AppCompatActivity {
 
         ratingBar = (RatingBar) findViewById(R.id.rating_eventos);
         btnCalificar = (Button) findViewById(R.id.btn_calificar);
-/*
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(EventoActivity.this, "Stars: "+ (int)rating, Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
         btnCalificar.setOnClickListener(new View.OnClickListener() {
             @Override
