@@ -10,9 +10,11 @@ public class Local {
     private String Categoria;
     private String Imagen;
 
-    public Local(String name, String direccion, String calificacion,
-                 String descripcion, String precio, String categoria,
-                 String imagen) {
+    public Local(){
+
+    }
+
+    public Local(String name, String direccion, String calificacion, String descripcion, String precio, String categoria, String imagen) {
 
         Name = name;
         Direccion = direccion;
@@ -21,6 +23,7 @@ public class Local {
         Precio = precio;
         Categoria = categoria;
         Imagen = imagen;
+
     }
 
     public String getName() {
