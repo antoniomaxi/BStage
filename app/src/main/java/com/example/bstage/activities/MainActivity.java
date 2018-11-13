@@ -1,12 +1,25 @@
 package com.example.bstage.activities;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -15,13 +28,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.bstage.models.Evento;
 import com.example.bstage.adapter.RecyclerViewAdapter;
 import com.example.bstage.R;
+import com.example.bstage.models.Local;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //PARA LISTAR LOS JSONS
     private final String JSON_URL = "https://backstage-backend.herokuapp.com/api/eventos";
@@ -53,16 +68,34 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerviewid);
         jsonrequest();
+
+        //Lineas de salvacion del prepa Quevedo
+        NavigationView navigationView = findViewById(R.id.drawermenu);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
     }
 
-    //BOTON DE MENU ACTIVADO
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(mToggle.onOptionsItemSelected(item)){
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (mToggle.onOptionsItemSelected(item)){
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.eventos){
+            //No hacer nada!
+        }
+        else if (id == R.id.locales){
+            Intent i = new Intent(MainActivity.this, LocalMainActivity.class);
+            startActivity(i);
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void jsonrequest() {
@@ -118,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(myadapter);
 
     }
-
 }
 
 

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:id="@+id/eventos" android:title="Eventos" android:icon="@drawable/ic_dashboard_black_24dp"/>
-<item android:id="@+id/locales" android:title="Locales" android:icon="@drawable/ic_event_black_24dp"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<item
+    android:id="@+id/eventos"
+    android:title="Eventos"
+    android:icon="@drawable/ic_dashboard_black_24dp"/>
+<item
+    android:id="@+id/locales"
+    android:title="Locales"
+    android:icon="@drawable/ic_event_black_24dp" />
 <item android:id="@+id/buscar" android:title="Buscar" android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>
 <item android:id="@+id/populares" android:title="Populares" android:icon="@drawable/ic_trending_up_black_24dp"/>
 <item android:id="@+id/ajustes" android:title="Ajustes" android:icon="@drawable/ic_settings_black_24dp"/>

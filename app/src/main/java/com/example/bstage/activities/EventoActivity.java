@@ -128,9 +128,9 @@ public class EventoActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-
             if (progressDialog != null) {
                 progressDialog.dismiss();
+
             }
         }
 
