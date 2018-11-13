@@ -1,5 +1,7 @@
 package com.example.bstage.activities;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +16,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bstage.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class EventoActivity extends AppCompatActivity {
 
     RatingBar ratingBar;
     Button btnCalificar;
+    String id;
+    String cont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +47,10 @@ public class EventoActivity extends AppCompatActivity {
         btnCalificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EventoActivity.this, "Stars: " + (float)ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EventoActivity.this, "Stars: " + (float) ratingBar.getRating(), Toast.LENGTH_SHORT).show();
                 ratingBar.setRating(0);
+
+                new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/eventos/"+id);
             }
         });
 
@@ -39,7 +58,7 @@ public class EventoActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //Recibe la data
-        String id = getIntent().getExtras().getString("evento_id");
+        id = getIntent().getExtras().getString("evento_id");
         String name = getIntent().getExtras().getString("evento_name");
         String productor = getIntent().getExtras().getString("evento_productor");
         String fecha = getIntent().getExtras().getString("evento_fecha");
@@ -49,7 +68,7 @@ public class EventoActivity extends AppCompatActivity {
         String precio = getIntent().getExtras().getString("evento_precio");
         String categoria = getIntent().getExtras().getString("evento_categoria");
         String imagen = getIntent().getExtras().getString("evento_imagen");
-        String cont = getIntent().getExtras().getString("evento_contador");
+        cont = getIntent().getExtras().getString("evento_contador");
 
         //ini views
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingtoolbar_id);
@@ -78,5 +97,82 @@ public class EventoActivity extends AppCompatActivity {
 
         Glide.with(this).load(imagen).apply(requestOptions).into(img);
 
+    }
+
+    class PutDataTask extends AsyncTask<String, Void, String> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(EventoActivity.this);
+            progressDialog.setMessage("Updating data...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                return putData(params[0]);
+            } catch (IOException ex) {
+                return "Network error !";
+            } catch (JSONException ex) {
+                return "Data invalid !";
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+        }
+
+        private String putData(String urlPath) throws IOException, JSONException {
+
+            BufferedWriter bufferedWriter = null;
+            String result = null;
+
+            try {
+                //Create data to update
+                JSONObject dataToSend = new JSONObject();
+                dataToSend.put("Calificacion", "Think twice code once ! HI !");
+                dataToSend.put("Contador", "feel good - UPDATED !");
+
+
+                //Initialize and config request, then connect to server
+                URL url = new URL(urlPath);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000 /* milliseconds */);
+                urlConnection.setConnectTimeout(10000 /* milliseconds */);
+                urlConnection.setRequestMethod("PUT");
+                urlConnection.setDoOutput(true);  //enable output (body data)
+                urlConnection.setRequestProperty("Content-Type", "application/json");// set header
+                urlConnection.connect();
+
+                //Write data into server
+                OutputStream outputStream = urlConnection.getOutputStream();
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                bufferedWriter.write(dataToSend.toString());
+                bufferedWriter.flush();
+
+                //Check update successful or not
+                if (urlConnection.getResponseCode() == 200) {
+                    return "Update successfully !";
+                } else {
+                    return "Update failed !";
+                }
+            } finally {
+                if(bufferedWriter != null) {
+                    bufferedWriter.close();
+                }
+            }
+        }
     }
 }
