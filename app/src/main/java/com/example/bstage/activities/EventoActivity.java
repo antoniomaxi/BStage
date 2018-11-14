@@ -41,6 +41,7 @@ public class EventoActivity extends AppCompatActivity {
     String cont;
     float auxCal, viejo =0;
     String calificacion;
+    String acumulador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class EventoActivity extends AppCompatActivity {
         String categoria = getIntent().getExtras().getString("evento_categoria");
         String imagen = getIntent().getExtras().getString("evento_imagen");
         cont = getIntent().getExtras().getString("evento_contador");
+        acumulador = getIntent().getExtras().getString("evento_acumulador");
 
         //ini views
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsingtoolbar_id);
@@ -145,17 +147,26 @@ public class EventoActivity extends AppCompatActivity {
         private String calificar(){
 
             float nuevo = auxCal;
+
             Log.e("btn", "nuevo "+nuevo);
 
-            viejo += nuevo;
+            float acum = Float.valueOf(acumulador);
+             acum = acum + nuevo;
+
             Log.e("btn", "viejo "+calificacion);
 
             int contNuevo = Integer.valueOf(cont);
             contNuevo++;
+
             Log.e("btn", "contador "+contNuevo);
-            float promedio = (nuevo + viejo)/contNuevo;
+
+            float promedio = acum/contNuevo;
+
+            DecimalFormat formato1 = new DecimalFormat("#.00");
+
             Log.e("btn", "promedio "+promedio);
-            String promedioF = String.valueOf(promedio);
+
+            String promedioF = String.valueOf(formato1.format(promedio));
 
             return promedioF;
         }
@@ -168,6 +179,15 @@ public class EventoActivity extends AppCompatActivity {
             return String.valueOf(contNuevo);
         }
 
+        private String acumulador(){
+
+            float nuevo = auxCal;
+            float acum = Float.valueOf(acumulador);
+            acum = acum + nuevo;
+
+            return String.valueOf(acum);
+        }
+
         private String putData(String urlPath) throws IOException, JSONException {
 
             BufferedWriter bufferedWriter = null;
@@ -178,7 +198,7 @@ public class EventoActivity extends AppCompatActivity {
                 JSONObject dataToSend = new JSONObject();
                 dataToSend.put("Calificacion", calificar());
                 dataToSend.put("Contador", contador());
-
+                dataToSend.put("Acumulador", acumulador());
 
                 //Initialize and config request, then connect to server
                 URL url = new URL(urlPath);

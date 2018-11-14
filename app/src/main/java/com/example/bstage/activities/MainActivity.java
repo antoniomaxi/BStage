@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         evento.setPrecio(jsonObject.getString("Precio"));
                         evento.setImagen(jsonObject.getString("Imagen"));
                         evento.setContador(jsonObject.getString("Contador"));
+                        evento.setAcumulador(jsonObject.getString("Acumulador"));
 
                         lstEventos.add(evento);
 

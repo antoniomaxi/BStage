@@ -13,13 +13,15 @@ public class Evento {
     private String Precio;
     private String Categoria;
     private String Contador;
+    private String Acumulador;
+
 
     public Evento(){
 
     }
 
     public Evento(String ID, String name, String lugar, String fecha, String imagen, String productor, String calificacion, String descripcion,
-                  String precio, String categoria, String contador) {
+                  String precio, String categoria, String contador,String acum) {
 
         _id = ID;
         Name = name;
@@ -32,6 +34,15 @@ public class Evento {
         Precio = precio;
         Categoria = categoria;
         Contador = contador;
+        Acumulador = acum;
+    }
+
+    public String getAcumulador() {
+        return Acumulador;
+    }
+
+    public void setAcumulador(String acumulador) {
+        Acumulador = acumulador;
     }
 
     public String getContador() {

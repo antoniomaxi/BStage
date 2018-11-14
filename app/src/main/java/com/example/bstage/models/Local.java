@@ -10,6 +10,7 @@ public class Local {
     private String Categoria;
     private String Imagen;
 
+
     public Local(){
 
     }

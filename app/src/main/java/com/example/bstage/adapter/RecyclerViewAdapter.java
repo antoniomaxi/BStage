@@ -75,6 +75,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 i.putExtra("evento_categoria", mData.get(viewHolder.getAdapterPosition()).getCategoria());
                 i.putExtra("evento_imagen", mData.get(viewHolder.getAdapterPosition()).getImagen());
                 i.putExtra("evento_contador", mData.get(viewHolder.getAdapterPosition()).getContador());
+                i.putExtra("evento_acumulador", mData.get(viewHolder.getAdapterPosition()).getAcumulador());
 
                 mContext.startActivity(i);
 
