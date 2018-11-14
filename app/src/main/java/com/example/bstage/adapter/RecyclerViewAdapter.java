@@ -36,7 +36,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
 
-        holder.tv_id.setText(mData.get(position).get_id());
         holder.tv_name.setText(mData.get(position).getName());
         holder.tv_categoria.setText(mData.get(position).getCategoria());
         holder.tv_calificacion.setText(mData.get(position).getCalificacion());
@@ -91,7 +90,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView tv_calificacion;
         TextView tv_categoria;
         TextView tv_precio;
-        TextView tv_id;
         ImageView img_ImgEvento;
         LinearLayout view_container;
 
@@ -99,7 +97,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             view_container = itemView.findViewById(R.id.container);
-            tv_id = itemView.findViewById(R.id.mongoid);
             tv_name = itemView.findViewById(R.id.evento_name);
             tv_precio = itemView.findViewById(R.id.precio);
             tv_categoria = itemView.findViewById(R.id.categoria);

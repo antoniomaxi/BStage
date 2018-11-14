@@ -2,9 +2,12 @@ package com.example.bstage.activities;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.renderscript.Float2;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 public class EventoActivity extends AppCompatActivity {
 
@@ -35,6 +39,8 @@ public class EventoActivity extends AppCompatActivity {
     Button btnCalificar;
     String id;
     String cont;
+    float auxCal, viejo =0;
+    String calificacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,8 @@ public class EventoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(EventoActivity.this, "Stars: " + (float) ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+                auxCal = ratingBar.getRating();
+                Log.e("btn", "aux es "+auxCal);
                 ratingBar.setRating(0);
 
                 new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/eventos/"+id);
@@ -63,7 +71,7 @@ public class EventoActivity extends AppCompatActivity {
         String productor = getIntent().getExtras().getString("evento_productor");
         String fecha = getIntent().getExtras().getString("evento_fecha");
         String lugar = getIntent().getExtras().getString("evento_lugar");
-        String calificacion = getIntent().getExtras().getString("evento_calificacion");
+        calificacion = getIntent().getExtras().getString("evento_calificacion");
         String descripcion = getIntent().getExtras().getString("evento_descripcion");
         String precio = getIntent().getExtras().getString("evento_precio");
         String categoria = getIntent().getExtras().getString("evento_categoria");
@@ -134,6 +142,32 @@ public class EventoActivity extends AppCompatActivity {
             }
         }
 
+        private String calificar(){
+
+            float nuevo = auxCal;
+            Log.e("btn", "nuevo "+nuevo);
+
+            viejo += nuevo;
+            Log.e("btn", "viejo "+calificacion);
+
+            int contNuevo = Integer.valueOf(cont);
+            contNuevo++;
+            Log.e("btn", "contador "+contNuevo);
+            float promedio = (nuevo + viejo)/contNuevo;
+            Log.e("btn", "promedio "+promedio);
+            String promedioF = String.valueOf(promedio);
+
+            return promedioF;
+        }
+
+        private String contador(){
+
+            int contNuevo = Integer.valueOf(cont);
+            contNuevo++;
+
+            return String.valueOf(contNuevo);
+        }
+
         private String putData(String urlPath) throws IOException, JSONException {
 
             BufferedWriter bufferedWriter = null;
@@ -142,8 +176,8 @@ public class EventoActivity extends AppCompatActivity {
             try {
                 //Create data to update
                 JSONObject dataToSend = new JSONObject();
-                dataToSend.put("Calificacion", "Think twice code once ! HI !");
-                dataToSend.put("Contador", "feel good - UPDATED !");
+                dataToSend.put("Calificacion", calificar());
+                dataToSend.put("Contador", contador());
 
 
                 //Initialize and config request, then connect to server
