@@ -39,7 +39,7 @@ public class EventoActivity extends AppCompatActivity {
     Button btnCalificar;
     String id;
     String cont;
-    float auxCal, viejo =0;
+    float auxCal;
     String calificacion;
     String acumulador;
 
@@ -153,7 +153,7 @@ public class EventoActivity extends AppCompatActivity {
             float acum = Float.valueOf(acumulador);
              acum = acum + nuevo;
 
-            Log.e("btn", "viejo "+calificacion);
+            Log.e("btn", "acum "+acum);
 
             int contNuevo = Integer.valueOf(cont);
             contNuevo++;
