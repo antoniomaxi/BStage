@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View header = navigationView.getHeaderView(0);
     }
 
+    //Activando boton de despliegue del menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if (mToggle.onOptionsItemSelected(item)){
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    //Manejando las acciones del menu (Renderizacion)
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();

@@ -1,17 +1,20 @@
 package com.example.bstage.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bstage.R;
+import com.example.bstage.activities.LocalActivity;
 import com.example.bstage.models.Local;
 
 import java.util.List;
@@ -38,8 +41,26 @@ public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.My
         View view;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         view = inflater.inflate(R.layout.list_locales, parent, false);
+        final MyViewHolder viewHolder = new MyViewHolder(view);
 
-        return new MyViewHolder(view);
+        viewHolder.view_container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(mContext, LocalActivity.class);
+                i.putExtra("local_name", mData.get(viewHolder.getAdapterPosition()).getName());
+                i.putExtra("local_descripcion", mData.get(viewHolder.getAdapterPosition()).getDescripcion());
+                i.putExtra("local_categoria", mData.get(viewHolder.getAdapterPosition()).getCategoria());
+                i.putExtra("local_precio", mData.get(viewHolder.getAdapterPosition()).getPrecio());
+                i.putExtra("local_calificacion", mData.get(viewHolder.getAdapterPosition()).getCalificacion());
+                i.putExtra("local_direccion", mData.get(viewHolder.getAdapterPosition()).getDireccion());
+                i.putExtra("local_img", mData.get(viewHolder.getAdapterPosition()).getImagen());
+
+                mContext.startActivity(i);
+            }
+        });
+
+        return viewHolder;
     }
 
     @Override
@@ -68,11 +89,13 @@ public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.My
         TextView tv_calificacion;
         TextView tv_precio;
         ImageView img_ImgLocal;
+        LinearLayout view_container;
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            view_container = itemView.findViewById(R.id.container_local);
             tv_name = itemView.findViewById(R.id.local_name);
             tv_categoria = itemView.findViewById(R.id.local_categoria);
             tv_calificacion = itemView.findViewById(R.id.local_calificacion);

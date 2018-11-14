@@ -1,5 +1,8 @@
 package com.example.bstage.activities;
 
+import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalMainActivity extends AppCompatActivity {
+public class LocalMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     //PARA LISTAR LOS JSONS
     private final String JSON_URL = "https://backstage-backend.herokuapp.com/api/locales";
@@ -53,6 +58,11 @@ public class LocalMainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerviewlocal);
         jsonrequest();
+
+        //Lineas de salvacion del prepa Quevedo
+        NavigationView navigationView = findViewById(R.id.drawermenu);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
     }
 
     //BOTON DE MENU ACTIVADO
@@ -63,6 +73,23 @@ public class LocalMainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //Manejando las acciones del menu (Renderizacion)
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.eventos){
+
+            Intent i = new Intent(LocalMainActivity.this, MainActivity.class);
+            startActivity(i);
+        }
+        else if (id == R.id.locales){
+            //No hacer nada!
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerlocal);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void jsonrequest() {
@@ -85,6 +112,7 @@ public class LocalMainActivity extends AppCompatActivity {
                         local.setPrecio(jsonObject.getString("Precio"));
                         local.setImagen(jsonObject.getString("Imagen"));
                         local.setCalificacion(jsonObject.getString("Calificacion"));
+                        local.setDireccion(jsonObject.getString("Direccion"));
 
                         lstLocales.add(local);
 
