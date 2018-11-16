@@ -95,6 +95,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(MainActivity.this, LocalMainActivity.class);
             startActivity(i);
         }
+        else if (id==R.id.iniciarsesion){
+            Intent i = new Intent (MainActivity.this, IniciarSesionActivity.class);
+            startActivity(i);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.closeDrawer(GravityCompat.START);
         return true;

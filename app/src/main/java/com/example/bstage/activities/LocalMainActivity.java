@@ -78,7 +78,9 @@ public class LocalMainActivity extends AppCompatActivity implements NavigationVi
     //Manejando las acciones del menu (Renderizacion)
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         int id = item.getItemId();
+
         if (id == R.id.eventos){
 
             Intent i = new Intent(LocalMainActivity.this, MainActivity.class);
@@ -86,6 +88,11 @@ public class LocalMainActivity extends AppCompatActivity implements NavigationVi
         }
         else if (id == R.id.locales){
             //No hacer nada!
+        }
+        else if(id == R.id.iniciarsesion){
+
+            Intent i = new Intent(LocalMainActivity.this, IniciarSesionActivity.class);
+            startActivity(i);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerlocal);
         drawer.closeDrawer(GravityCompat.START);

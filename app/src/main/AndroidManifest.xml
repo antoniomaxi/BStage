@@ -20,9 +20,10 @@
         </activity>
         <activity android:name=".activities.MisEventosActivity" />
         <activity android:name=".activities.BuscarActivity" />
-        <activity android:name=".activities.LocalMainActivity"></activity>
-        <activity android:name=".activities.EventoActivity"></activity>
-        <activity android:name=".activities.LocalActivity"></activity>
+        <activity android:name=".activities.LocalMainActivity" />
+        <activity android:name=".activities.EventoActivity" />
+        <activity android:name=".activities.LocalActivity" />
+        <activity android:name=".activities.IniciarSesionActivity"></activity>
     </application>
 
 </manifest>
