@@ -3,4 +3,7 @@
     <string name="Open">Open</string>
     <string name="Close">Close</string>
     <string name="bss">BsS</string>
+    <string name="descripcion">Descripción del local:</string>
+    <string name="direcci_n">Dirección del local:</string>
+    <string name="descripci_n_del_evento">Descripción del Evento:</string>
 </resources>

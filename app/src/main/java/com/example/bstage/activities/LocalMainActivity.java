@@ -106,6 +106,7 @@ public class LocalMainActivity extends AppCompatActivity implements NavigationVi
                         jsonObject = response.getJSONObject(i);
                         Local local = new Local();
 
+                        local.set_id(jsonObject.getString("_id"));
                         local.setName(jsonObject.getString("Name"));
                         local.setCategoria(jsonObject.getString("Categoria"));
                         local.setDescripcion(jsonObject.getString("Descripcion"));
@@ -113,6 +114,8 @@ public class LocalMainActivity extends AppCompatActivity implements NavigationVi
                         local.setImagen(jsonObject.getString("Imagen"));
                         local.setCalificacion(jsonObject.getString("Calificacion"));
                         local.setDireccion(jsonObject.getString("Direccion"));
+                        local.setContador(jsonObject.getString("Contador"));
+                        local.setAcumulador(jsonObject.getString("Acumulador"));
 
                         lstLocales.add(local);
 

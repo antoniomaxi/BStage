@@ -2,6 +2,7 @@ package com.example.bstage.models;
 
 public class Local {
 
+    private String _id;
     private String Name;
     private String Direccion;
     private String Calificacion;
@@ -9,14 +10,18 @@ public class Local {
     private String Precio;
     private String Categoria;
     private String Imagen;
+    private String Contador;
+    private String Acumulador;
 
 
     public Local(){
 
     }
 
-    public Local(String name, String direccion, String calificacion, String descripcion, String precio, String categoria, String imagen) {
+    public Local(String ID, String name, String direccion, String calificacion, String descripcion, String precio, String categoria,
+                 String imagen, String contador, String acumulador) {
 
+        _id = ID;
         Name = name;
         Direccion = direccion;
         Calificacion = calificacion;
@@ -24,7 +29,33 @@ public class Local {
         Precio = precio;
         Categoria = categoria;
         Imagen = imagen;
+        Contador = contador;
+        Acumulador = acumulador;
 
+    }
+
+    public String getContador() {
+        return Contador;
+    }
+
+    public void setContador(String contador) {
+        Contador = contador;
+    }
+
+    public String getAcumulador() {
+        return Acumulador;
+    }
+
+    public void setAcumulador(String acumulador) {
+        Acumulador = acumulador;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getName() {

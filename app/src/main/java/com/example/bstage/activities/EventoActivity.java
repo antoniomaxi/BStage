@@ -48,6 +48,7 @@ public class EventoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
 
+        //Calificar
         ratingBar = (RatingBar) findViewById(R.id.rating_eventos);
         btnCalificar = (Button) findViewById(R.id.btn_calificar);
 

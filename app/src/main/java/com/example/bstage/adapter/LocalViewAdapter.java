@@ -48,6 +48,7 @@ public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.My
             public void onClick(View v) {
 
                 Intent i = new Intent(mContext, LocalActivity.class);
+                i.putExtra("_id", mData.get(viewHolder.getAdapterPosition()).get_id());
                 i.putExtra("local_name", mData.get(viewHolder.getAdapterPosition()).getName());
                 i.putExtra("local_descripcion", mData.get(viewHolder.getAdapterPosition()).getDescripcion());
                 i.putExtra("local_categoria", mData.get(viewHolder.getAdapterPosition()).getCategoria());
@@ -55,6 +56,8 @@ public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.My
                 i.putExtra("local_calificacion", mData.get(viewHolder.getAdapterPosition()).getCalificacion());
                 i.putExtra("local_direccion", mData.get(viewHolder.getAdapterPosition()).getDireccion());
                 i.putExtra("local_img", mData.get(viewHolder.getAdapterPosition()).getImagen());
+                i.putExtra("local_contador", mData.get(viewHolder.getAdapterPosition()).getContador());
+                i.putExtra("local_acumulador", mData.get(viewHolder.getAdapterPosition()).getAcumulador());
 
                 mContext.startActivity(i);
             }
