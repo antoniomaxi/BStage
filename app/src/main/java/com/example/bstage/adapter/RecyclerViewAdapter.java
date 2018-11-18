@@ -1,8 +1,10 @@
 package com.example.bstage.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +16,23 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.bstage.activities.EventoActivity;
 import com.example.bstage.models.Evento;
 import com.example.bstage.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    private List<Evento> mData;
+    private List<Evento> mData, filterList;
     private Context mContext;
     RequestOptions option;
+
 
     public RecyclerViewAdapter(Context mContext, List<Evento> mData) {
 
         this.mContext = mContext;
         this.mData = mData;
+        this.filterList = new ArrayList<Evento>();
+        this.filterList.addAll(this.mData);
 
         //Opcion de request de Glide
 
@@ -36,13 +43,51 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
 
-        holder.tv_name.setText(mData.get(position).getName());
-        holder.tv_categoria.setText(mData.get(position).getCategoria());
-        holder.tv_calificacion.setText(mData.get(position).getCalificacion());
-        holder.tv_precio.setText(mData.get(position).getPrecio());
+
+        Evento evento = filterList.get(position);
+        holder.tv_name.setText(evento.getName());
+        holder.tv_categoria.setText(evento.getCategoria());
+        holder.tv_calificacion.setText(evento.getCalificacion());
+        holder.tv_precio.setText(evento.getPrecio());
 
         //Load image de internet y colocarla en ImageView usando Glide
         Glide.with(mContext).load(mData.get(position).getImagen()).apply(option).into(holder.img_ImgEvento);
+
+    }
+
+    //Busqueda
+    public void filter(final String s){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                filterList.clear();
+
+                if(TextUtils.isEmpty(s)){
+
+                    filterList.addAll(mData);
+                }
+
+                else{
+
+                    for(Evento evento: mData){
+
+                        if(evento.getName().toLowerCase().contains(s.toLowerCase()) ||
+                                evento.getCategoria().toLowerCase().contains(s.toLowerCase())){
+
+                            filterList.add(evento);
+                        }
+                    }
+                }
+
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
 
     }
 

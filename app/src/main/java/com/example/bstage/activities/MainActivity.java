@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     //PARA LISTAR LOS JSONS
     private final String JSON_URL = "https://backstage-backend.herokuapp.com/api/eventos";
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RequestQueue requestQueue;
     private List<Evento> lstEventos;
     private RecyclerView recyclerView;
+    private RecyclerViewAdapter adapter;
+    private SearchView mSearchView;
 
     //PARA EL MENU
     private DrawerLayout mDrawer;
@@ -65,20 +69,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //LISTA JSON
         lstEventos = new ArrayList<>();
-
         recyclerView = findViewById(R.id.recyclerviewid);
+        adapter = new RecyclerViewAdapter(this, lstEventos);
         jsonrequest();
 
         //Lineas de salvacion del prepa Quevedo
         NavigationView navigationView = findViewById(R.id.drawermenu);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
+
+        //Busqueda
+
+        mSearchView= (SearchView) findViewById(R.id.buscar);
     }
 
     //Activando boton de despliegue del menu
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if (mToggle.onOptionsItemSelected(item)){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -88,15 +96,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.eventos){
+        if (id == R.id.eventos) {
             //No hacer nada!
-        }
-        else if (id == R.id.locales){
+        } else if (id == R.id.locales) {
             Intent i = new Intent(MainActivity.this, LocalMainActivity.class);
             startActivity(i);
-        }
-        else if (id==R.id.iniciarsesion){
-            Intent i = new Intent (MainActivity.this, IniciarSesionActivity.class);
+        } else if (id == R.id.iniciarsesion) {
+            Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
             startActivity(i);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
@@ -112,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 JSONObject jsonObject = null;
 
-                for(int i=0; i< response.length(); i++){
+                for (int i = 0; i < response.length(); i++) {
 
-                    try{
+                    try {
                         jsonObject = response.getJSONObject(i);
                         Evento evento = new Evento();
 
@@ -158,8 +164,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setAdapter(myadapter);
 
     }
+
+    //Busqueda
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.drawermenu, menu);
+        MenuItem menuItem = menu.findItem(R.id.buscar);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    //Busqueda
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    //Busqueda
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        adapter.filter(s);
+        return true;
+    }
+
 }
-
-
 
 
