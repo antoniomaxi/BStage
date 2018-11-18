@@ -119,7 +119,7 @@ public class EventoActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = new ProgressDialog(EventoActivity.this);
-            progressDialog.setMessage("Updating data...");
+            progressDialog.setMessage("Calificando...");
             progressDialog.show();
         }
 

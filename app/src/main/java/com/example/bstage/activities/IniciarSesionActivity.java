@@ -22,6 +22,17 @@ public class IniciarSesionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_sesion);
 
+        btnRegistar = (Button) findViewById(R.id.btnRegistrar);
+        btnRegistar.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+
+                Intent i = new Intent(IniciarSesionActivity.this, RegistrarActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 }
