@@ -160,6 +160,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 String charString = charSequence.toString();
                 if(charString.isEmpty()){
+                    filterList = new ArrayList<>();
                     filterList = mData;
                 }
                 else{
