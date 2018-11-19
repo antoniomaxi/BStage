@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.bstage.R;
 
@@ -25,35 +24,35 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+public class AddLocalesActivity extends AppCompatActivity {
 
-public class RegistrarActivity extends AppCompatActivity {
-
-    Button btnSignUp;
-    EditText nombre, username, email, password;
+    Button btnAñadir;
+    EditText nombre, direccion, descripcion, precio, categoria, url_imagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar);
+        setContentView(R.layout.activity_add_locales);
 
-        btnSignUp = (Button) findViewById(R.id.btnSignUp);
-        nombre = (EditText) findViewById(R.id.nombre);
-        username = (EditText) findViewById(R.id.username);
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
+        btnAñadir = findViewById(R.id.btnAddLocal);
+        nombre = findViewById(R.id.nombreLocal);
+        direccion = findViewById(R.id.direccionLocal);
+        descripcion = findViewById(R.id.descripcionLocal);
+        precio = findViewById(R.id.precioLocal);
+        categoria = findViewById(R.id.categoriaLocal);
+        url_imagen = findViewById(R.id.urlImagenLocal);
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        btnAñadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //make POST request
-                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/usuarios");
+                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/locales");
 
-                Intent i = new Intent(RegistrarActivity.this, IniciarSesionActivity.class);
+                Intent i = new Intent(AddLocalesActivity.this, LocalMainActivity.class);
                 startActivity(i);
             }
         });
-
     }
 
     class PostDataTask extends AsyncTask<String, Void, String> {
@@ -64,8 +63,8 @@ public class RegistrarActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = new ProgressDialog(RegistrarActivity.this);
-            progressDialog.setMessage("Registrando...");
+            progressDialog = new ProgressDialog(AddLocalesActivity.this);
+            progressDialog.setMessage("Añadiendo Local...");
             progressDialog.show();
         }
 
@@ -99,10 +98,15 @@ public class RegistrarActivity extends AppCompatActivity {
             try {
                 //Create data to send to server
                 JSONObject dataToSend = new JSONObject();
-                dataToSend.put("Nombre", nombre.getText().toString());
-                dataToSend.put("Username", username.getText().toString());
-                dataToSend.put("Correo", email.getText().toString());
-                dataToSend.put("Clave", password.getText().toString());
+                dataToSend.put("Name", nombre.getText().toString());
+                dataToSend.put("Direccion", direccion.getText().toString());
+                dataToSend.put("Calificacion", 0);
+                dataToSend.put("Descripcion", descripcion.getText().toString());
+                dataToSend.put("Precio", precio.getText().toString());
+                dataToSend.put("Categoria", categoria.getText().toString());
+                dataToSend.put("Imagen", url_imagen.getText().toString());
+                dataToSend.put("Contador", 0);
+                dataToSend.put("Acumulador", 0);
 
                 //Initialize and config request, then connect to server.
                 URL url = new URL(urlPath);

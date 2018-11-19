@@ -1,6 +1,7 @@
 package com.example.bstage.activities;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocalMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    FloatingActionButton btnAñadirLocal;
 
     //PARA LISTAR LOS JSONS
     private final String JSON_URL = "https://backstage-backend.herokuapp.com/api/locales";
@@ -52,6 +56,17 @@ public class LocalMainActivity extends AppCompatActivity implements NavigationVi
         mToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Añadir evento
+        btnAñadirLocal = findViewById(R.id.btnAñadirLocales);
+        btnAñadirLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(LocalMainActivity.this, AddLocalesActivity.class);
+                startActivity(i);
+            }
+        });
 
         //LISTA JSON
         lstLocales = new ArrayList<>();

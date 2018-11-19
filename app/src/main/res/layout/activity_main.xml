@@ -27,4 +27,21 @@
 
     </android.support.design.widget.NavigationView>
 
+    <LinearLayout
+        android:layout_marginLeft="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnAñadirEventos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="normal"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_add_black_24dp"/>
+
+    </LinearLayout>
+
 </android.support.v4.widget.DrawerLayout>

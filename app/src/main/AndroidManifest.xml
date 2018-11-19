@@ -13,6 +13,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity">
             <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,7 +27,9 @@
         <activity android:name=".activities.EventoActivity" />
         <activity android:name=".activities.LocalActivity" />
         <activity android:name=".activities.IniciarSesionActivity" />
-        <activity android:name=".activities.RegistrarActivity"></activity>
+        <activity android:name=".activities.RegistrarActivity" />
+        <activity android:name=".activities.AddEventosActivity" />
+        <activity android:name=".activities.AddLocalesActivity"></activity>
     </application>
 
 </manifest>

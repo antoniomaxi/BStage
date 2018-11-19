@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,80 +22,43 @@ import com.example.bstage.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
 
     private List<Evento> mData, filterList;
     private Context mContext;
     RequestOptions option;
 
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+
+        TextView tv_name;
+        TextView tv_calificacion;
+        TextView tv_categoria;
+        TextView tv_precio;
+        ImageView img_ImgEvento;
+        LinearLayout view_container;
+
+        public MyViewHolder(View itemView){
+            super(itemView);
+
+            view_container = itemView.findViewById(R.id.container);
+            tv_name = itemView.findViewById(R.id.evento_name);
+            tv_precio = itemView.findViewById(R.id.precio);
+            tv_categoria = itemView.findViewById(R.id.categoria);
+            tv_calificacion = itemView.findViewById(R.id.calificacion);
+            img_ImgEvento = itemView.findViewById(R.id.ImgEvento);
+        }
+    }
 
     public RecyclerViewAdapter(Context mContext, List<Evento> mData) {
 
         this.mContext = mContext;
         this.mData = mData;
-        this.filterList = new ArrayList<Evento>();
-        this.filterList.addAll(this.mData);
+        this.filterList = mData;
 
         //Opcion de request de Glide
 
         option = new RequestOptions().centerCrop().placeholder(R.drawable.loading_shape).error(R.drawable.loading_shape);
 
-    }
-
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
-
-
-        Evento evento = filterList.get(position);
-        holder.tv_name.setText(evento.getName());
-        holder.tv_categoria.setText(evento.getCategoria());
-        holder.tv_calificacion.setText(evento.getCalificacion());
-        holder.tv_precio.setText(evento.getPrecio());
-
-        //Load image de internet y colocarla en ImageView usando Glide
-        Glide.with(mContext).load(mData.get(position).getImagen()).apply(option).into(holder.img_ImgEvento);
-
-    }
-
-    //Busqueda
-    public void filter(final String s){
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                filterList.clear();
-
-                if(TextUtils.isEmpty(s)){
-
-                    filterList.addAll(mData);
-                }
-
-                else{
-
-                    for(Evento evento: mData){
-
-                        if(evento.getName().toLowerCase().contains(s.toLowerCase()) ||
-                                evento.getCategoria().toLowerCase().contains(s.toLowerCase())){
-
-                            filterList.add(evento);
-                        }
-                    }
-                }
-
-                ((Activity) mContext).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyDataSetChanged();
-                    }
-                });
-            }
-        }).start();
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mData.size();
     }
 
     @Override
@@ -130,26 +95,97 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return viewHolder;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position){
 
-        TextView tv_name;
-        TextView tv_calificacion;
-        TextView tv_categoria;
-        TextView tv_precio;
-        ImageView img_ImgEvento;
-        LinearLayout view_container;
 
-        public MyViewHolder(View itemView){
-            super(itemView);
+        Evento evento = filterList.get(position);
+        holder.tv_name.setText(evento.getName());
+        holder.tv_categoria.setText(evento.getCategoria());
+        holder.tv_calificacion.setText(evento.getCalificacion());
+        holder.tv_precio.setText(evento.getPrecio());
 
-            view_container = itemView.findViewById(R.id.container);
-            tv_name = itemView.findViewById(R.id.evento_name);
-            tv_precio = itemView.findViewById(R.id.precio);
-            tv_categoria = itemView.findViewById(R.id.categoria);
-            tv_calificacion = itemView.findViewById(R.id.calificacion);
-            img_ImgEvento = itemView.findViewById(R.id.ImgEvento);
-        }
+        //Load image de internet y colocarla en ImageView usando Glide
+        Glide.with(mContext).load(mData.get(position).getImagen()).apply(option).into(holder.img_ImgEvento);
+
     }
+
+    /*
+    public void filter(final String s){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                filterList.clear();
+
+                if(TextUtils.isEmpty(s)){
+
+                    filterList.addAll(mData);
+                }
+
+                else{
+
+                    for(Evento evento: mData){
+
+                        if(evento.getName().toLowerCase().contains(s.toLowerCase()) ||
+                                evento.getCategoria().toLowerCase().contains(s.toLowerCase())){
+
+                            filterList.add(evento);
+                        }
+                    }
+                }
+
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
+
+    }*/
+
+    @Override
+    public int getItemCount() {
+        return filterList.size();
+    }
+
+    //Busqueda
+    @Override
+    public Filter getFilter(){
+        return new Filter(){
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence){
+
+                String charString = charSequence.toString();
+                if(charString.isEmpty()){
+                    filterList = mData;
+                }
+                else{
+                    List<Evento> listF = new ArrayList<>();
+
+                    for(Evento evento : mData){
+
+                        if(evento.getName().toLowerCase().contains(charString.toLowerCase())){
+                            listF.add(evento);
+                        }
+                    }
+                    filterList = listF;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filterList;
+                return filterResults;
+            }
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults){
+                filterList = (ArrayList<Evento>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
 
 
 }

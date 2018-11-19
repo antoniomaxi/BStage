@@ -3,12 +3,17 @@ package com.example.bstage.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.bstage.R;
 
@@ -25,36 +30,39 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+public class AddEventosActivity extends AppCompatActivity{
 
-public class RegistrarActivity extends AppCompatActivity {
-
-    Button btnSignUp;
-    EditText nombre, username, email, password;
+    Button btnAñadir;
+    EditText nombre, categoria, productor, fecha, lugar, descripcion, precio, url_imagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar);
+        setContentView(R.layout.activity_add_eventos);
 
-        btnSignUp = (Button) findViewById(R.id.btnSignUp);
-        nombre = (EditText) findViewById(R.id.nombre);
-        username = (EditText) findViewById(R.id.username);
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
+        btnAñadir = findViewById(R.id.btnAddEvento);
+        nombre = findViewById(R.id.nombreEvento);
+        categoria = findViewById(R.id.categoriaEvento);
+        productor = findViewById(R.id.productorEvento);
+        fecha = findViewById(R.id.fechaEvento);
+        lugar = findViewById(R.id.lugarEvento);
+        descripcion = findViewById(R.id.descripcionEvento);
+        precio = findViewById(R.id.precioEvento);
+        url_imagen = findViewById(R.id.urlImagenEvento);
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        btnAñadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //make POST request
-                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/usuarios");
+                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
 
-                Intent i = new Intent(RegistrarActivity.this, IniciarSesionActivity.class);
+                Intent i = new Intent(AddEventosActivity.this, MainActivity.class);
                 startActivity(i);
             }
         });
-
     }
+
 
     class PostDataTask extends AsyncTask<String, Void, String> {
 
@@ -64,8 +72,8 @@ public class RegistrarActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = new ProgressDialog(RegistrarActivity.this);
-            progressDialog.setMessage("Registrando...");
+            progressDialog = new ProgressDialog(AddEventosActivity.this);
+            progressDialog.setMessage("Añadiendo Evento...");
             progressDialog.show();
         }
 
@@ -99,10 +107,17 @@ public class RegistrarActivity extends AppCompatActivity {
             try {
                 //Create data to send to server
                 JSONObject dataToSend = new JSONObject();
-                dataToSend.put("Nombre", nombre.getText().toString());
-                dataToSend.put("Username", username.getText().toString());
-                dataToSend.put("Correo", email.getText().toString());
-                dataToSend.put("Clave", password.getText().toString());
+                dataToSend.put("Name", nombre.getText().toString());
+                dataToSend.put("Lugar", lugar.getText().toString());
+                dataToSend.put("Fecha", fecha.getText().toString());
+                dataToSend.put("Imagen", url_imagen.getText().toString());
+                dataToSend.put("Productor", productor.getText().toString());
+                dataToSend.put("Descripcion", descripcion.getText().toString());
+                dataToSend.put("Precio", precio.getText().toString());
+                dataToSend.put("Categoria", categoria.getText().toString());
+                dataToSend.put("Calificacion", 0);
+                dataToSend.put("Contador", 0);
+                dataToSend.put("Acumulador", 0);
 
                 //Initialize and config request, then connect to server.
                 URL url = new URL(urlPath);
