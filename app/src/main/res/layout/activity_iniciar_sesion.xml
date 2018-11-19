@@ -67,13 +67,15 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/correo_login"
             android:drawablePadding="4dp"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_person_outline_black_24dp"
-            android:hint="Usuario"/>
+            android:hint="Correo"/>
 
         <EditText
+            android:id="@+id/clave_login"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:drawablePadding="4dp"
@@ -82,6 +84,7 @@
             android:inputType="textPassword"/>
 
         <Button
+            android:id="@+id/entrar"
             android:layout_marginTop="40dp"
             android:layout_width="140dp"
             android:layout_height="wrap_content"

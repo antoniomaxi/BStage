@@ -11,6 +11,7 @@
     android:icon="@drawable/ic_store_black_24dp" />
 <item
     android:id="@+id/buscar"
+    android:title="Buscar"
     app:showAsAction="ifRoom|collapseActionView"
     app:actionViewClass="android.support.v7.widget.SearchView"
     android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>

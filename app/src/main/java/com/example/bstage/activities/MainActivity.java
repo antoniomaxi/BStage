@@ -5,12 +5,14 @@ import android.app.SearchManager;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +21,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -47,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final String JSON_URL = "https://backstage-backend.herokuapp.com/api/eventos";
     private JsonArrayRequest request;
     private RequestQueue requestQueue;
-    private List<Evento> lstEventos;
+    private List<Evento> lstEventos, notFilter;
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapter myadapter;
     private SearchView mSearchView;
 
     //PARA EL MENU
@@ -72,18 +77,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //LISTA JSON
         lstEventos = new ArrayList<>();
+        notFilter = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerviewid);
-        adapter = new RecyclerViewAdapter(this, lstEventos);
+        myadapter = new RecyclerViewAdapter(this, lstEventos);
         jsonrequest();
 
         //Lineas de salvacion del prepa Quevedo
         NavigationView navigationView = findViewById(R.id.drawermenu);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
-
-        //Busqueda
-
-        mSearchView= (SearchView) findViewById(R.id.buscar);
 
         //Floating Action Botton
 
@@ -159,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         e.printStackTrace();
                     }
                 }
+                notFilter.addAll(lstEventos);
                 setuprecyclerview(lstEventos);
             }
         }, new Response.ErrorListener() {
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setuprecyclerview(List<Evento> lstEventos) {
 
-        RecyclerViewAdapter myadapter = new RecyclerViewAdapter(this, lstEventos);
+        myadapter = new RecyclerViewAdapter(this, lstEventos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(myadapter);
@@ -186,33 +189,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.drawermenu, menu);
-        //MenuItem menuItem = menu.findItem(R.id.buscar);
 
-        //Asociar la configuracion de la busqueda con el SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView = (SearchView) menu.findItem(R.id.buscar)
-                .getActionView();
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setMaxWidth(Integer.MAX_VALUE);
+        MenuItem search = menu.findItem(R.id.buscar);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        search(searchView);
+
+        return true;
+    }
+
+    public void search(SearchView searchView){
 
         //Listening to search query text change
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                //filter recycler view when query is submitted
-                adapter.getFilter().filter(s);
+                /*if(s == null || s.equals("")) {
+                    lstEventos.clear();
+                    lstEventos.addAll(notFilter);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.e("change", s);
+                    //filter recycler view when text is changed
+                    ArrayList<Evento> e = new ArrayList<>();
+                    for (Evento ev: lstEventos) {
+                        if(ev.getName().toLowerCase().contains(s)) {
+                            e.add(ev);
+                            Log.e("For", ev.getName());
+                        }
+                    }
+                    lstEventos.clear();
+                    lstEventos.addAll(e);
+                    adapter.notifyDataSetChanged();
+                }*/
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                //filter recycler view when text is changed
-                adapter.getFilter().filter(s);
-                return false;
+                /*if(s == null || s.equals("")) {
+                    lstEventos.clear();
+                    lstEventos.addAll(notFilter);
+                    myadapter.notifyDataSetChanged();
+                } else {
+                    Log.e("change", s);
+                    //filter recycler view when text is changed
+                    ArrayList<Evento> e = new ArrayList<>();
+                    for (Evento ev: lstEventos) {
+                        if(ev.getName().toLowerCase().contains(s)) {
+                            e.add(ev);
+                            Log.e("For", ev.getName());
+                        }
+                    }
+                    lstEventos.clear();
+                    lstEventos.addAll(e);
+                    myadapter.notifyDataSetChanged();
+                }*/
+
+                myadapter.getFilter().filter(s);
+                return true;
             }
         });
-
-        return true;
     }
 
 }

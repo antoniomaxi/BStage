@@ -24,7 +24,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
 
-    private List<Evento> mData, filterList;
+    private List<Evento> mData, mFilteredList;
     private Context mContext;
     RequestOptions option;
 
@@ -53,7 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         this.mContext = mContext;
         this.mData = mData;
-        this.filterList = mData;
+        this.mFilteredList = mData;
 
         //Opcion de request de Glide
 
@@ -98,12 +98,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
 
-
-        Evento evento = filterList.get(position);
-        holder.tv_name.setText(evento.getName());
-        holder.tv_categoria.setText(evento.getCategoria());
-        holder.tv_calificacion.setText(evento.getCalificacion());
-        holder.tv_precio.setText(evento.getPrecio());
+        holder.tv_name.setText(mData.get(position).getName());
+        holder.tv_categoria.setText(mData.get(position).getCategoria());
+        holder.tv_calificacion.setText(mData.get(position).getCalificacion());
+        holder.tv_precio.setText(mData.get(position).getPrecio());
 
         //Load image de internet y colocarla en ImageView usando Glide
         Glide.with(mContext).load(mData.get(position).getImagen()).apply(option).into(holder.img_ImgEvento);
@@ -148,7 +146,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return filterList.size();
+        return mFilteredList.size();
     }
 
     //Busqueda
@@ -160,33 +158,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 String charString = charSequence.toString();
                 if(charString.isEmpty()){
-                    filterList = new ArrayList<>();
-                    filterList = mData;
+                    mFilteredList = mData;
                 }
                 else{
-                    List<Evento> listF = new ArrayList<>();
+                    List<Evento> filteredList = new ArrayList<>();
 
                     for(Evento evento : mData){
 
-                        if(evento.getName().toLowerCase().contains(charString.toLowerCase())){
-                            listF.add(evento);
+                        if(evento.getName().toLowerCase().contains(charString)){
+                            filteredList.add(evento);
                         }
                     }
-                    filterList = listF;
+                    mFilteredList = filteredList;
                 }
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = filterList;
+                filterResults.values = mFilteredList;
                 return filterResults;
             }
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults){
-                filterList = (ArrayList<Evento>) filterResults.values;
+                mFilteredList = (ArrayList<Evento>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
     }
-
-
-
 
 }
