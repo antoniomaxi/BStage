@@ -203,30 +203,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                /*if(s == null || s.equals("")) {
-                    lstEventos.clear();
-                    lstEventos.addAll(notFilter);
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Log.e("change", s);
-                    //filter recycler view when text is changed
-                    ArrayList<Evento> e = new ArrayList<>();
-                    for (Evento ev: lstEventos) {
-                        if(ev.getName().toLowerCase().contains(s)) {
-                            e.add(ev);
-                            Log.e("For", ev.getName());
-                        }
-                    }
-                    lstEventos.clear();
-                    lstEventos.addAll(e);
-                    adapter.notifyDataSetChanged();
-                }*/
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                /*if(s == null || s.equals("")) {
+
+                if(s == null || s.equals("")) {
                     lstEventos.clear();
                     lstEventos.addAll(notFilter);
                     myadapter.notifyDataSetChanged();
@@ -243,9 +226,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     lstEventos.clear();
                     lstEventos.addAll(e);
                     myadapter.notifyDataSetChanged();
-                }*/
+                }
 
-                myadapter.getFilter().filter(s);
                 return true;
             }
         });
