@@ -7,27 +7,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bstage.R;
 import com.example.bstage.activities.LocalActivity;
 import com.example.bstage.models.Local;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.MyViewHolder>{
+public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.MyViewHolder> implements Filterable {
 
     private Context mContext;
-    private List<Local> mData;
+    private List<Local> mData, mFilteredList;
     RequestOptions option;
 
     public LocalViewAdapter(Context mContext, List<Local> mData) {
         this.mContext = mContext;
         this.mData = mData;
+        this.mFilteredList = mData;
 
         //Pedir option para Glide
 
@@ -82,7 +85,8 @@ public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.My
 
     @Override
     public int getItemCount() {
-        return mData.size();
+
+        return mFilteredList.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
@@ -105,5 +109,39 @@ public class LocalViewAdapter  extends  RecyclerView.Adapter<LocalViewAdapter.My
             tv_precio = itemView.findViewById(R.id.local_precio);
             img_ImgLocal = itemView.findViewById(R.id.ImgLocal);
         }
+    }
+
+    //Busqueda
+    @Override
+    public Filter getFilter(){
+        return new Filter(){
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence){
+
+                String charString = charSequence.toString();
+                if(charString.isEmpty()){
+                    mFilteredList = mData;
+                }
+                else{
+                    List<Local> filteredList = new ArrayList<>();
+
+                    for(Local local : mData){
+
+                        if(local.getName().toLowerCase().contains(charString)){
+                            filteredList.add(local);
+                        }
+                    }
+                    mFilteredList = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredList;
+                return filterResults;
+            }
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults){
+                mFilteredList = (ArrayList<Local>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

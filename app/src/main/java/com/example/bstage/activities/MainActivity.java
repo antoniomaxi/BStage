@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Evento> lstEventos, notFilter;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter myadapter;
-    private SearchView mSearchView;
 
     //PARA EL MENU
     private DrawerLayout mDrawer;
