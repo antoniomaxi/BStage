@@ -1,6 +1,8 @@
 package com.example.bstage.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +18,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bstage.R;
-import com.example.bstage.Retrofit.IMyService;
-import com.example.bstage.Retrofit.RetrofitClient;
+import com.example.bstage.models.Usuario;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
@@ -28,12 +42,12 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class IniciarSesionActivity extends AppCompatActivity{
+public class IniciarSesionActivity extends AppCompatActivity {
 
     Button btnRegistar, btnEntrar;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    IMyService iMyService;
     EditText et_correo, et_clave;
+    public static Usuario usuario;
 
     @Override
     protected void onStop() {
@@ -47,19 +61,15 @@ public class IniciarSesionActivity extends AppCompatActivity{
         setContentView(R.layout.activity_iniciar_sesion);
 
         btnRegistar = (Button) findViewById(R.id.btnRegistrar);
-        btnRegistar.setOnClickListener(new View.OnClickListener(){
+        btnRegistar.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
 
                 Intent i = new Intent(IniciarSesionActivity.this, RegistrarActivity.class);
                 startActivity(i);
             }
         });
-
-        //Init Service
-        Retrofit retrofitClient = RetrofitClient.getInstances();
-        iMyService = retrofitClient.create(IMyService.class);
 
         //Init view
         et_correo = (EditText) findViewById(R.id.correo_login);
@@ -77,24 +87,104 @@ public class IniciarSesionActivity extends AppCompatActivity{
 
     private void loginUser(String correo, String clave) {
 
-        if(TextUtils.isEmpty(correo)){
+        if (TextUtils.isEmpty(correo)) {
             Toast.makeText(this, "Correo no puede estar vacio", Toast.LENGTH_LONG).show();
             return;
         }
-        if(TextUtils.isEmpty(clave)){
+        if (TextUtils.isEmpty(clave)) {
             Toast.makeText(this, "Clave no puede estar vacio", Toast.LENGTH_LONG).show();
             return;
         }
 
-        compositeDisposable.add(iMyService.loginUser(correo, clave)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String response) throws Exception {
-                Toast.makeText(IniciarSesionActivity.this, ""+response, Toast.LENGTH_SHORT).show();
-            }
-        }));
+        //make POST request
+        new PostDataTask().execute("https://backstage-backend.herokuapp.com/api/signin");
     }
 
+    class PostDataTask extends AsyncTask<String, Void, String> {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(IniciarSesionActivity.this);
+            progressDialog.setMessage("Iniciando Sesion...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            try {
+                return postData(params[0]);
+            } catch (IOException ex) {
+                return "Network error !";
+            } catch (JSONException ex) {
+                return "Data Invalid !";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+
+            JSONObject jsonObject;
+
+
+
+        }
+
+        private String postData(String urlPath) throws IOException, JSONException {
+
+            StringBuilder result = new StringBuilder();
+            BufferedWriter bufferedWriter = null;
+            BufferedReader bufferedReader = null;
+
+            try {
+                //Create data to send to server
+                JSONObject dataToSend = new JSONObject();
+                dataToSend.put("Correo", et_correo.getText().toString());
+                dataToSend.put("Clave", et_clave.getText().toString());
+
+
+                //Initialize and config request, then connect to server.
+                URL url = new URL(urlPath);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(10000 /* milliseconds */);
+                urlConnection.setConnectTimeout(10000 /* milliseconds */);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);  //enable output (body data)
+                urlConnection.setRequestProperty("Content-Type", "application/json");// set header
+                urlConnection.connect();
+
+                //Write data into server
+                OutputStream outputStream = urlConnection.getOutputStream();
+                bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                bufferedWriter.write(dataToSend.toString());
+                bufferedWriter.flush();
+
+                //Read data response from server
+                InputStream inputStream = urlConnection.getInputStream();
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    result.append(line).append("\n");
+                }
+            } finally {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                if (bufferedWriter != null) {
+                    bufferedWriter.close();
+                }
+            }
+
+            return result.toString();
+        }
+    }
 }
