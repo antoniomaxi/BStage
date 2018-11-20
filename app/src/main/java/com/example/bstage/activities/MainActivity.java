@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     //filter recycler view when text is changed
                     ArrayList<Evento> e = new ArrayList<>();
                     for (Evento ev: lstEventos) {
-                        if(ev.getName().toLowerCase().contains(s)) {
+                        if(ev.getName().toLowerCase().contains(s) || ev.getCategoria().toLowerCase().contains(s) || ev.getPrecio().contains(s)) {
                             e.add(ev);
                             Log.e("For", ev.getName());
                         }
