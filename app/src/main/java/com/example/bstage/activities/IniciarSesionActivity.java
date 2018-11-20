@@ -19,10 +19,8 @@ import android.widget.Toast;
 
 import com.example.bstage.R;
 import com.example.bstage.models.Usuario;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -32,7 +30,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -79,7 +76,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser(et_correo.getText().toString(), et_clave.getText().toString());
+                //loginUser(et_correo.getText().toString(), et_clave.getText().toString());
             }
         });
 

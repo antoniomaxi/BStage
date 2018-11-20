@@ -208,6 +208,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onQueryTextChange(String s) {
 
+
+
                 if(s == null || s.equals("")) {
                     lstEventos.clear();
                     lstEventos.addAll(notFilter);
@@ -217,7 +219,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     //filter recycler view when text is changed
                     ArrayList<Evento> e = new ArrayList<>();
                     for (Evento ev: lstEventos) {
-                        if(ev.getName().toLowerCase().contains(s) || ev.getCategoria().toLowerCase().contains(s) || ev.getPrecio().contains(s)) {
+                        if(ev.getName().toLowerCase().contains(s.toLowerCase())
+                                || ev.getCategoria().toLowerCase().contains(s.toLowerCase())
+                                || ev.getPrecio().contains(s.toLowerCase())) {
                             e.add(ev);
                             Log.e("For", ev.getName());
                         }

@@ -16,14 +16,6 @@
     app:actionViewClass="android.support.v7.widget.SearchView"
     android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>
 <item
-    android:id="@+id/populares"
-    android:title="Populares"
-    android:icon="@drawable/ic_trending_up_black_24dp"/>
-<item
-    android:id="@+id/ajustes"
-    android:title="Ajustes"
-    android:icon="@drawable/ic_settings_black_24dp"/>
-<item
     android:id="@+id/iniciarsesion"
     android:title="Iniciar sesion"
     android:icon="@drawable/ic_exit_to_app_black_24dp"/>

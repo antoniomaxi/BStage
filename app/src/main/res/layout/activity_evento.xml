@@ -39,13 +39,13 @@
 
                 <ImageView
                     android:id="@+id/aa_ImgEvento"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="170dp"
+                    android:layout_height="230dp"
                     android:background="@drawable/loading_shape" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_width="170dp"
+                    android:layout_height="200dp"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
@@ -55,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:text="Nombre del evento"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="25sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -64,6 +64,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="Categoria"
+                        android:textSize="22sp"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -76,7 +77,7 @@
                         android:paddingRight="7dp"
                         android:text="0,0"
                         android:textColor="#fff"
-                        android:textSize="15sp"
+                        android:textSize="19sp"
                         android:textStyle="bold"/>
 
                     <LinearLayout
@@ -90,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="Precio"
-                            android:textSize="18sp"
+                            android:textSize="22sp"
                             android:textColor="#fff"
                             android:textStyle="bold"/>
 
@@ -101,7 +102,7 @@
                             android:layout_marginStart="7dp"
                             android:text="@string/bss"
                             android:textColor="#fff"
-                            android:textSize="20sp"
+                            android:textSize="22sp"
                             android:textStyle="bold"/>
 
                     </LinearLayout>
@@ -110,29 +111,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="360dp"
-                android:layout_height="88dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="220dp">
 
-                <RatingBar
-                    android:id="@+id/rating_eventos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:numStars="5"
-                    android:rating="0"/>
-
-                <Button
-                    android:id="@+id/btn_calificar"
-                    android:layout_width="105dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_marginLeft="9dp"
-                    android:text="Calificar"/>
-
-            </LinearLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -163,6 +142,36 @@
                 android:layout_height="match_parent"
                 android:id="@+id/aa_descripcion"
                 android:textSize="18sp"/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calificar el Evento:"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="360dp"
+                android:layout_height="88dp">
+
+                <RatingBar
+                    android:id="@+id/rating_eventos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:numStars="5"
+                    android:rating="0"/>
+
+                <Button
+                    android:id="@+id/btn_calificar"
+                    android:layout_width="105dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginLeft="9dp"
+                    android:text="Calificar"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
