@@ -18,7 +18,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bstage.R;
+import com.example.bstage.models.Evento;
 import com.example.bstage.models.Usuario;
+import com.google.gson.JsonParser;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -76,7 +80,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //loginUser(et_correo.getText().toString(), et_clave.getText().toString());
+                loginUser(et_correo.getText().toString(), et_clave.getText().toString());
             }
         });
 
@@ -130,9 +134,37 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
 
-            JSONObject jsonObject;
+
+                try {
+                    JSONObject jsonObject =new JSONObject(result) ;
+
+                    if(jsonObject.getString("message") == "Te has logueado correctamente"){
+
+                        usuario = new Usuario();
+
+                        usuario.set_id(jsonObject.getString("_id"));
+                        usuario.setName(jsonObject.getString("Name"));
+                        usuario.setToken(jsonObject.getString("token"));
+                        usuario.setCorreo(et_correo.getText().toString());
 
 
+                    }else{
+                        if(jsonObject.getString("message") == "Email o Contraseña incorrectos"){
+                            // Email o Contraseña incorrectos
+
+                            Toast.makeText(IniciarSesionActivity.this, "Email o Contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+
+                            //Usuario no encontrado
+                            Toast.makeText(IniciarSesionActivity.this, "Disculpe, debe registrarse primero.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
         }
 

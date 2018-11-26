@@ -33,6 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 
+import static com.example.bstage.activities.IniciarSesionActivity.usuario;
+
 public class EventoActivity extends AppCompatActivity {
 
     RatingBar ratingBar;
@@ -55,12 +57,21 @@ public class EventoActivity extends AppCompatActivity {
         btnCalificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EventoActivity.this, "Stars: " + (float) ratingBar.getRating(), Toast.LENGTH_SHORT).show();
-                auxCal = ratingBar.getRating();
-                Log.e("btn", "aux es "+auxCal);
-                ratingBar.setRating(0);
+               if(usuario.getToken()!=null) {
 
-                new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/eventos/"+id);
+                   Toast.makeText(EventoActivity.this, "Stars: " + (float) ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+                   auxCal = ratingBar.getRating();
+                   Log.e("btn", "aux es " + auxCal);
+                   ratingBar.setRating(0);
+
+                   new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/eventos/" + id);
+               }
+
+               else{
+
+                   Toast.makeText(EventoActivity.this, "Para calificar es necesario iniciar sesión", Toast.LENGTH_SHORT).show();
+
+               }
             }
         });
 
@@ -209,6 +220,7 @@ public class EventoActivity extends AppCompatActivity {
                 urlConnection.setRequestMethod("PUT");
                 urlConnection.setDoOutput(true);  //enable output (body data)
                 urlConnection.setRequestProperty("Content-Type", "application/json");// set header
+                urlConnection.setRequestProperty("authentication", usuario.getToken());// set header
                 urlConnection.connect();
 
                 //Write data into server

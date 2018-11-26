@@ -4,18 +4,18 @@ public class Usuario {
 
     private String _id;
     private String Name;
-    private String Username;
-    private String Imagen;
     private String Token;
     private String Correo;
 
-    public Usuario(String _id, String name, String username, String imagen, String token, String correo) {
+    public Usuario(String _id, String name, String token, String correo) {
         this._id = _id;
         Name = name;
-        Username = username;
-        Imagen = imagen;
         Token = token;
         Correo = correo;
+    }
+
+    public Usuario() {
+
     }
 
     public String get_id() {
@@ -34,21 +34,6 @@ public class Usuario {
         Name = name;
     }
 
-    public String getUsername() {
-        return Username;
-    }
-
-    public void setUsername(String username) {
-        Username = username;
-    }
-
-    public String getImagen() {
-        return Imagen;
-    }
-
-    public void setImagen(String imagen) {
-        Imagen = imagen;
-    }
 
     public String getToken() {
         return Token;

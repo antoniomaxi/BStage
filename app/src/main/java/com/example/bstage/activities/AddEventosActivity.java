@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.bstage.R;
 
@@ -29,6 +30,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static com.example.bstage.activities.IniciarSesionActivity.usuario;
 
 public class AddEventosActivity extends AppCompatActivity{
 
@@ -54,11 +57,19 @@ public class AddEventosActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                //make POST request
-                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
+                if(usuario.getToken()!=null) {
 
-                Intent i = new Intent(AddEventosActivity.this, MainActivity.class);
-                startActivity(i);
+                    //make POST request
+                    new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/eventos");
+
+                    Intent i = new Intent(AddEventosActivity.this, MainActivity.class);
+                    startActivity(i);
+                }
+
+                else{
+
+                    Toast.makeText(AddEventosActivity.this, "Disculpe, para agregar eventos es necesario iniciar sesión", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -127,6 +138,7 @@ public class AddEventosActivity extends AppCompatActivity{
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);  //enable output (body data)
                 urlConnection.setRequestProperty("Content-Type", "application/json");// set header
+                urlConnection.setRequestProperty("authentication", usuario.getToken());// set header
                 urlConnection.connect();
 
                 //Write data into server

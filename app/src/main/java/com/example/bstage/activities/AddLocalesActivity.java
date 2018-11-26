@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.bstage.R;
 
@@ -23,6 +24,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static com.example.bstage.activities.IniciarSesionActivity.usuario;
 
 public class AddLocalesActivity extends AppCompatActivity {
 
@@ -46,11 +49,19 @@ public class AddLocalesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //make POST request
-                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/locales");
+                if(usuario.getToken()!=null) {
 
-                Intent i = new Intent(AddLocalesActivity.this, LocalMainActivity.class);
-                startActivity(i);
+                    //make POST request
+                    new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/locales");
+
+                    Intent i = new Intent(AddLocalesActivity.this, LocalMainActivity.class);
+                    startActivity(i);
+
+                }
+                else{
+
+                    Toast.makeText(AddLocalesActivity.this, "Disculpe, para agregar locales es necesario iniciar sesión", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -116,6 +127,7 @@ public class AddLocalesActivity extends AppCompatActivity {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);  //enable output (body data)
                 urlConnection.setRequestProperty("Content-Type", "application/json");// set header
+                urlConnection.setRequestProperty("authentication", usuario.getToken());// set header
                 urlConnection.connect();
 
                 //Write data into server
