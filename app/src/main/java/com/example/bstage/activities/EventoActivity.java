@@ -63,7 +63,6 @@ public class EventoActivity extends AppCompatActivity {
                    auxCal = ratingBar.getRating();
                    Log.e("btn", "aux es " + auxCal);
                    ratingBar.setRating(0);
-
                    new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/eventos/" + id);
                }
 
@@ -220,7 +219,8 @@ public class EventoActivity extends AppCompatActivity {
                 urlConnection.setRequestMethod("PUT");
                 urlConnection.setDoOutput(true);  //enable output (body data)
                 urlConnection.setRequestProperty("Content-Type", "application/json");// set header
-                urlConnection.setRequestProperty("authentication", usuario.getToken());// set header
+                Log.e("err", "token: "+usuario.getToken());
+                urlConnection.setRequestProperty("authorization", usuario.getToken());// set header
                 urlConnection.connect();
 
                 //Write data into server

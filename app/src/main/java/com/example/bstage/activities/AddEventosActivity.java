@@ -138,7 +138,7 @@ public class AddEventosActivity extends AppCompatActivity{
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);  //enable output (body data)
                 urlConnection.setRequestProperty("Content-Type", "application/json");// set header
-                urlConnection.setRequestProperty("authentication", usuario.getToken());// set header
+                urlConnection.setRequestProperty("authorization", usuario.getToken());// set header
                 urlConnection.connect();
 
                 //Write data into server

@@ -46,6 +46,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.bstage.activities.IniciarSesionActivity.usuario;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //PARA LISTAR LOS JSONS
@@ -119,8 +121,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(MainActivity.this, LocalMainActivity.class);
             startActivity(i);
         } else if (id == R.id.iniciarsesion) {
-            Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
-            startActivity(i);
+
+            if(usuario.getToken()!= null) {
+                Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
+                startActivity(i);
+            }
+            else{
+                Toast.makeText(MainActivity.this, "Disculpe, ya usted inició sesión", Toast.LENGTH_SHORT).show();
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.closeDrawer(GravityCompat.START);
