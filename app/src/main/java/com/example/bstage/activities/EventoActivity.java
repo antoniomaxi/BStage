@@ -1,6 +1,7 @@
 package com.example.bstage.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.renderscript.Float2;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -64,6 +65,8 @@ public class EventoActivity extends AppCompatActivity {
                    Log.e("btn", "aux es " + auxCal);
                    ratingBar.setRating(0);
                    new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/eventos/" + id);
+                   Intent i = new Intent(EventoActivity.this, MainActivity.class);
+                   startActivity(i);
                }
 
                else{

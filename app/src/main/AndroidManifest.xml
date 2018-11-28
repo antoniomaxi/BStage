@@ -18,8 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MisEventosActivity" />
-        <activity android:name=".activities.BuscarActivity" />
         <activity android:name=".activities.LocalMainActivity" />
         <activity android:name=".activities.EventoActivity" />
         <activity android:name=".activities.LocalActivity" />

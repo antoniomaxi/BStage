@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -140,13 +141,15 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(result) ;
 
                 if(jsonObject.getString("message").equals("A")){
-                    usuario = new Usuario();
                     Log.e("err", "in if of post execute");
                     usuario.set_id(jsonObject.getString("_id"));
                     usuario.setName(jsonObject.getString("Name"));
                     usuario.setToken(jsonObject.getString("token"));
                     usuario.setCorreo(et_correo.getText().toString());
-                    Log.e("json", ""+usuario.getToken());
+                    usuario.setImagen(jsonObject.getString("Imagen"));
+                    usuario.setAdmin(jsonObject.getBoolean("Admin"));
+
+                    Log.e("img", ""+usuario.getImagen());
                     Toast.makeText(IniciarSesionActivity.this, "Bienvenido "+usuario.getName(), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(IniciarSesionActivity.this, MainActivity.class);
                     startActivity(i);

@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<item
-    android:id="@+id/eventos"
-    android:title="Eventos"
-    android:icon="@drawable/ic_whatshot_black_24dp"/>
-<item
-    android:id="@+id/locales"
-    android:title="Locales"
-    android:icon="@drawable/ic_store_black_24dp" />
-<item
-    android:id="@+id/buscar"
-    android:title="Buscar"
-    app:showAsAction="ifRoom|collapseActionView"
-    app:actionViewClass="android.support.v7.widget.SearchView"
-    android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>
-<item
-    android:id="@+id/iniciarsesion"
-    android:title="Iniciar sesion"
-    android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+    <item
+        android:id="@+id/eventos"
+        android:title="Eventos"
+        android:icon="@drawable/ic_whatshot_black_24dp"/>
+    <item
+        android:id="@+id/locales"
+        android:title="Locales"
+        android:icon="@drawable/ic_store_black_24dp" />
+    <item
+        android:id="@+id/buscar"
+        android:title="Buscar"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_youtube_searched_for_black_24dp"/>
+    <item
+        android:id="@+id/iniciarsesion"
+        android:title="Iniciar sesion"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+    <item
+        android:id="@+id/cerrarsesion"
+        android:title="Cerrar sesion"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:visible="false"/>
 </menu>

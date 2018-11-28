@@ -20,6 +20,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //firebase core
+    implementation 'com.google.firebase:firebase-core:16.0.1'
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
     //Glide library
@@ -46,3 +48,5 @@ dependencies {
     //Material Styled Dialog
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

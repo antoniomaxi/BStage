@@ -28,6 +28,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -35,6 +37,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bstage.models.Evento;
 import com.example.bstage.adapter.RecyclerViewAdapter;
 import com.example.bstage.R;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Evento> lstEventos, notFilter;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter myadapter;
+    RequestOptions option;
 
     //PARA EL MENU
     private DrawerLayout mDrawer;
@@ -67,13 +72,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        hideItem();
 
         //MENU
+
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.Open, R.string.Close);
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //LISTA JSON
@@ -97,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent i = new Intent(MainActivity.this, AddEventosActivity.class);
                 startActivity(i);
-
             }
         });
     }
@@ -111,6 +116,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    public void hideItem(){
+        Log.e("err", "hideItem");
+        NavigationView navigationView = (NavigationView) findViewById(R.id.drawermenu);
+        Menu nav_menu = navigationView.getMenu();
+        View headerView = navigationView.getHeaderView(0);
+        FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.btnAñadirEventos);
+
+        if(usuario.getToken()!=null){
+            nav_menu.findItem(R.id.iniciarsesion).setVisible(false);
+            nav_menu.findItem(R.id.cerrarsesion).setVisible(true);
+            RequestOptions options = new RequestOptions().centerCrop().placeholder(R.drawable.img).error(R.drawable.img);
+            ImageView fotoperfil = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.fotoperfil);
+            TextView nombre = (TextView) headerView.findViewById(R.id.nombreHeader);
+            TextView correo = (TextView)headerView.findViewById(R.id.correoHeader);
+            if(usuario.getAdmin()){
+                btn.show();
+                Log.e("if", "admin "+usuario.getAdmin());
+            }
+
+            if(fotoperfil != null) {
+                Glide.with(this).load(usuario.getImagen()).apply(options.circleCropTransform()).into(fotoperfil);
+                nombre.setText(usuario.getName());
+                correo.setText(usuario.getCorreo());
+            } else {
+                Log.e("IMAGEN", "NULL");
+            }
+        }
+        else{
+            nav_menu.findItem(R.id.iniciarsesion).setVisible(true);
+            nav_menu.findItem(R.id.cerrarsesion).setVisible(false);
+
+        }
+    }
+
     //Manejando las acciones del menu (Renderizacion)
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -121,14 +160,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(MainActivity.this, LocalMainActivity.class);
             startActivity(i);
         } else if (id == R.id.iniciarsesion) {
-
-            if(usuario.getToken()!= null) {
-                Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
-                startActivity(i);
-            }
-            else{
-                Toast.makeText(MainActivity.this, "Disculpe, ya usted inició sesión", Toast.LENGTH_SHORT).show();
-            }
+            Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
+            startActivity(i);
+        }else if(id == R.id.cerrarsesion){
+            usuario.set_id(null);
+            usuario.setCorreo(null);
+            usuario.setName(null);
+            usuario.setToken(null);
+            usuario.setImagen(null);
+            usuario.setAdmin(null);
+            Intent i = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(i);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
         drawer.closeDrawer(GravityCompat.START);
@@ -215,8 +257,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String s) {
-
-
 
                 if(s == null || s.equals("")) {
                     lstEventos.clear();

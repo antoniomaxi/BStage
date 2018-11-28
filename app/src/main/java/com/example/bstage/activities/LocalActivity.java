@@ -28,6 +28,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 
+import static com.example.bstage.activities.IniciarSesionActivity.usuario;
+
 public class LocalActivity extends AppCompatActivity {
 
     RatingBar ratingBar;
@@ -116,7 +118,7 @@ public class LocalActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = new ProgressDialog(LocalActivity.this);
-            progressDialog.setMessage("Updating data...");
+            progressDialog.setMessage("Calificando...");
             progressDialog.show();
         }
 
@@ -206,6 +208,7 @@ public class LocalActivity extends AppCompatActivity {
                 urlConnection.setRequestMethod("PUT");
                 urlConnection.setDoOutput(true);  //enable output (body data)
                 urlConnection.setRequestProperty("Content-Type", "application/json");// set header
+                urlConnection.setRequestProperty("authorization", usuario.getToken());// set header
                 urlConnection.connect();
 
                 //Write data into server

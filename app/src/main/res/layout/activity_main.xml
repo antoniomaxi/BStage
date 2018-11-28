@@ -19,6 +19,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <android.support.design.widget.NavigationView
+        app:headerLayout="@layout/header"
         android:id="@+id/drawermenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.FloatingActionButton
+            android:visibility="gone"
             android:id="@+id/btnAñadirEventos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

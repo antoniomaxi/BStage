@@ -3,6 +3,7 @@ package com.example.bstage.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.bstage.activities.EventoActivity;
+import com.example.bstage.activities.MainActivity;
 import com.example.bstage.models.Evento;
 import com.example.bstage.R;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.bstage.activities.IniciarSesionActivity.usuario;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> implements Filterable {
 
@@ -32,6 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView tv_categoria;
         TextView tv_precio;
         ImageView img_ImgEvento;
+        ImageView img_Perfil;
         LinearLayout view_container;
 
         public MyViewHolder(View itemView){
@@ -43,6 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_categoria = itemView.findViewById(R.id.categoria);
             tv_calificacion = itemView.findViewById(R.id.calificacion);
             img_ImgEvento = itemView.findViewById(R.id.ImgEvento);
+            img_Perfil = itemView.findViewById(R.id.fotoperfil);
         }
     }
 
@@ -55,7 +61,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //Opcion de request de Glide
 
         option = new RequestOptions().centerCrop().placeholder(R.drawable.loading_shape).error(R.drawable.loading_shape);
-
     }
 
     @Override
@@ -102,7 +107,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //Load image de internet y colocarla en ImageView usando Glide
         Glide.with(mContext).load(mData.get(position).getImagen()).apply(option).into(holder.img_ImgEvento);
-
     }
 
     @Override
