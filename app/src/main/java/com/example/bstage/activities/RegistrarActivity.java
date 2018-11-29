@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +21,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.bstage.R;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -51,10 +55,12 @@ public class RegistrarActivity extends AppCompatActivity {
     static int PReqCode = 1;
     static int REQUESCODE = 1;
     Uri pickedImgUri;
+    static String urlImagen;
 
     //Firebase
     FirebaseStorage storage;
     StorageReference storageReference;
+    UploadTask uploadTask;
 
 
     @Override
@@ -91,6 +97,7 @@ public class RegistrarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 //make POST request
                 new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/usuarios");
                 uploadImage();
@@ -103,21 +110,33 @@ public class RegistrarActivity extends AppCompatActivity {
 
     private void uploadImage() {
 
-        StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+        final StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+        uploadTask = ref.putFile(pickedImgUri);
 
-        ref.putFile(pickedImgUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //Upload succesful
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(RegistrarActivity.this, "La imagen no se pudo subir "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    urlImagen = downloadUri.toString();
+                    Log.i("URL", "urlImagen "+urlImagen);
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+
     }
 
     private void openGallery() {
@@ -213,6 +232,8 @@ public class RegistrarActivity extends AppCompatActivity {
                 dataToSend.put("Correo", email.getText().toString());
                 dataToSend.put("Clave", password.getText().toString());
                 dataToSend.put("Admin", false);
+                Log.i("URL2", "url: "+urlImagen);
+                dataToSend.put("Imagen", urlImagen);
 
                 //Initialize and config request, then connect to server.
                 URL url = new URL(urlPath);
