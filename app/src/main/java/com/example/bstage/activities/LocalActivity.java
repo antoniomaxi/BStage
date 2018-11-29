@@ -1,6 +1,7 @@
 package com.example.bstage.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -52,11 +53,22 @@ public class LocalActivity extends AppCompatActivity {
         btnCalificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LocalActivity.this, "Stars :"+ (float) ratingBar.getRating(), Toast.LENGTH_SHORT).show();
-                auxCal = ratingBar.getRating();
-                ratingBar.setRating(0);
 
-                new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/locales/"+id);
+                if(usuario.getToken()!=null) {
+                    Toast.makeText(LocalActivity.this, "Stars :" + (float) ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+                    auxCal = ratingBar.getRating();
+                    ratingBar.setRating(0);
+
+                    new PutDataTask().execute("https://backstage-backend.herokuapp.com/api/locales/" + id);
+                    Intent i = new Intent(LocalActivity.this, LocalMainActivity.class);
+                    startActivity(i);
+
+                }
+                else{
+
+                    Toast.makeText(LocalActivity.this, "Para calificar es necesario iniciar sesión", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 

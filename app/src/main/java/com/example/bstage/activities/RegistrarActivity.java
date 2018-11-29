@@ -129,7 +129,7 @@ public class RegistrarActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     urlImagen = downloadUri.toString();
-                    Log.i("URL", "urlImagen "+urlImagen);
+                    Log.i("URL", "if urlImagen "+urlImagen);
                 } else {
                     // Handle failures
                     // ...

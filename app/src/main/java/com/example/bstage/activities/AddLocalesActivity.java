@@ -54,7 +54,7 @@ public class AddLocalesActivity extends AppCompatActivity {
                     //make POST request
                     new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/locales");
 
-                    Intent i = new Intent(AddLocalesActivity.this, LocalMainActivity.class);
+                    Intent i = new Intent(AddLocalesActivity.this, MainActivity.class);
                     startActivity(i);
 
                 }

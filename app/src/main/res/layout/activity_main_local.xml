@@ -33,6 +33,7 @@ android:id="@+id/drawerlocal">
         android:layout_height="wrap_content">
 
         <android.support.design.widget.FloatingActionButton
+            android:visibility="gone"
             android:id="@+id/btnAñadirLocales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
