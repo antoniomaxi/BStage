@@ -55,7 +55,7 @@ public class RegistrarActivity extends AppCompatActivity {
     static int PReqCode = 1;
     static int REQUESCODE = 1;
     Uri pickedImgUri;
-    static String urlImagen;
+    String urlImagen,url2;
 
     //Firebase
     FirebaseStorage storage;
@@ -97,9 +97,6 @@ public class RegistrarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                //make POST request
-                new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/usuarios");
                 uploadImage();
                 Intent i = new Intent(RegistrarActivity.this, MainActivity.class);
                 startActivity(i);
@@ -130,6 +127,8 @@ public class RegistrarActivity extends AppCompatActivity {
                     Uri downloadUri = task.getResult();
                     urlImagen = downloadUri.toString();
                     Log.i("URL", "if urlImagen "+urlImagen);
+                    //make POST request
+                    new PostDataTask().execute("http://backstage-backend.herokuapp.com/api/usuarios");
                 } else {
                     // Handle failures
                     // ...
